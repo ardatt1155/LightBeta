@@ -10,4 +10,12 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 # Advertisements
 GET     /advertisements/show 		controllers.Advertisement.show
+GET     /advertisements/:uid		controllers.Advertisement.get(uid: Int)
+POST    /advertisements/:uid		controllers.Advertisement.post(uid: Int)
+DELETE  /advertisements/:uid		controllers.Advertisement.delete(uid: Int)
+
+# curl --request GET http://localhost:9000/advertisements/show
+# curl --request GET http://localhost:9000/advertisements/1
+# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample A", "price":80, "state":0, "mileage":5, "registration":"01/01/2015"}' http://localhost:9000/advertisements/1
+# curl --request DELETE http://localhost:9000/advertisements/1
 
