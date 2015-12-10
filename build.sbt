@@ -18,6 +18,8 @@ libraryDependencies += evolutions
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
+lazy val myProject = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
+
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
