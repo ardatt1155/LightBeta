@@ -12,12 +12,13 @@ class Advertisement extends Controller {
 
   def show = Action { request =>
   	val sort = request.queryString.get("sort").flatMap(_.headOption).getOrElse("uid")
-  	val models = AdvertisementModel.find.orderBy(sort).findList  	
+  	val models = AdvertisementModel.find.orderBy(sort).findList
   	Ok(models.toString)
   }
 
-  def get(uid: Int) = Action { request =>
-  	Ok("Got " + uid);
+  def get(uid: Int) = Action {
+  	val model = AdvertisementModel.find.where.eq("uid", uid).findUnique
+  	Ok(model.toString);
   }
 
   def post(uid: Int) = Action { request =>
@@ -57,7 +58,9 @@ class Advertisement extends Controller {
   }
 
   def delete(uid: Int) = Action {
-  	Ok("Got " + uid);
+  	val model = AdvertisementModel.find.where.eq("uid", uid).findUnique
+  	model.delete
+  	Ok("Ok");
   }
 
 }
