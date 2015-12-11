@@ -6,13 +6,15 @@ import play.api._
 import play.api.mvc._
 import java.util._
 import java.text._
+import play.api.libs.json._
 
 class Advertisement extends Controller {
 
   def show = Action { request =>
   	val sort = request.queryString.get("sort").flatMap(_.headOption).getOrElse("uid")
   	val models = AdvertisementModel.find.orderBy(sort).findList
-  	Ok(models.toString)
+  	val response = AdvertisementModel.toJson(models)
+  	Ok(response)
   }
 
   def get(uid: Int) = Action {

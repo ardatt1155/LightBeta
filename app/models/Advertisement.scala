@@ -7,6 +7,7 @@ import com.avaje.ebean._
 import play.api.libs.json._
 import play.data.format._
 import play.data.validation._
+import scala.collection.JavaConversions._
 
 object Advertisement {
   var find: Model.Finder[Integer, Advertisement] = new Model.Finder(classOf[Advertisement])
@@ -31,6 +32,12 @@ object Advertisement {
     model.state = state.get
     model.registration = date
     return model
+  }
+
+  def toJson(models: List[Advertisement]) : JsValue = {
+    val flats = models.map { model => model.toJson }
+    val response = Json.obj("advertisements" -> JsArray(flats))
+    return response;
   }
 }
 
