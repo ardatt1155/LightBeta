@@ -4,10 +4,10 @@ This is your new Play application
 This file will be packaged with your application, when using `activator dist`.
 
 ## REST operations to add some sample data
-# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample A", "price":11, "state":true, "mileage":14, "registration":"01/01/2015", "fuel":"Diesel"}' http://localhost:9000/advertisements/post
-# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample B", "price":21, "state":false, "mileage":23, "registration":"01/03/2015", "fuel":"Diesel"}' http://localhost:9000/advertisements/post
-# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample C", "price":31, "state":false, "mileage":22, "registration":"03/01/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/post
-# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample D", "price":41, "state":true, "mileage":21, "registration":"03/03/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/post
+# curl --request PUT --header "Content-type: application/json" --data '{"title":"Sample A", "price":11, "state":true, "mileage":14, "registration":"01/01/2015", "fuel":"Diesel"}' http://localhost:9000/advertisements/put
+# curl --request PUT --header "Content-type: application/json" --data '{"title":"Sample B", "price":21, "state":false, "mileage":23, "registration":"01/03/2015", "fuel":"Diesel"}' http://localhost:9000/advertisements/put
+# curl --request PUT --header "Content-type: application/json" --data '{"title":"Sample C", "price":31, "state":false, "mileage":22, "registration":"03/01/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/put
+# curl --request PUT --header "Content-type: application/json" --data '{"title":"Sample D", "price":41, "state":true, "mileage":21, "registration":"03/03/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/put
 
 ## REST operations to list all data
 # curl --request GET http://localhost:9000/advertisements/show
@@ -22,6 +22,20 @@ This file will be packaged with your application, when using `activator dist`.
 ## To fetch an advertisement by UID
 # curl --request GET http://localhost:9000/advertisements/1
 
+## To modify an existing advertisement
+# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample D", "price":41, "state":true, "mileage":21, "registration":"03/03/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/5
+
 ## To delete an advertisement by UID
 # curl --request DELETE http://localhost:9000/advertisements/1
+
+
+
+==== Story ======
+Playscout is a Scala REST application built with the Google Play framework. Playscout is a trivial CRUD application.
+(a) The sole model is Advertisement which models a car-advertisement with the following fields : uid, title, fuel, price, mileage, state, registration.
+(b) Playscout exposes 5 REST apis to expose a CRUD interface on this model. Refer to conf/routes for specification. See above for example usages
+(c) The underlying data-store is a MySql server. You must initiate a database named Playscout in a server running somewhere, and configure the application to connect to it via conf/application.conf
+(d) Playscout has a few sample testcases too. Errorhandling is not rigorous.
+
+
 
