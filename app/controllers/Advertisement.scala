@@ -11,21 +11,29 @@ import play.api.libs.json._
 class Advertisement extends Controller {
 
   def show = Action { request =>
-  	val sort = request.queryString.get("sort").flatMap(_.headOption).getOrElse("uid")
-  	val models = AdvertisementModel.find.orderBy(sort).findList
-  	val response = AdvertisementModel.toJson(models)
-  	Ok(response)
+    try {
+    	val sort = request.queryString.get("sort").flatMap(_.headOption).getOrElse("uid")
+    	val models = AdvertisementModel.find.orderBy(sort).findList
+  	  val response = AdvertisementModel.toJson(models)
+  	  Ok(response)
+    } catch {
+      case e: Exception => BadRequest("Not ok")
+    }
   }
 
   def get(uid: Int) = Action {
-  	val model = AdvertisementModel.find.where.eq("uid", uid).findUnique
-  	val result = model.toJson
-  	Ok(result);
+    try {
+    	val model = AdvertisementModel.find.where.eq("uid", uid).findUnique
+    	val result = model.toJson
+  	  Ok(result);
+    } catch {
+      case e: Exception => BadRequest("Not ok")
+    }
   }
 
   def post(uid: Int) = Action { request =>
-    val json = request.body.asJson.get
     try {
+      val json = request.body.asJson.get
       val nm = AdvertisementModel.fromJson(json)
       val om = AdvertisementModel.find.where.eq("uid", uid).findUnique
       om.assign(nm)
@@ -37,22 +45,23 @@ class Advertisement extends Controller {
   }
 
   def put = Action { request =>
-	  request.body.asJson.map { json =>
-  		try {
-  			val model = AdvertisementModel.fromJson(json)
-  			model.save
-  			Ok("Ok")
-  		} catch {
-  			case e: Exception => BadRequest("Not ok")
-  		}
-  	}.getOrElse {
-      BadRequest("Not ok")
-    }
+  	try {
+      val json = request.body.asJson.get
+			val model = AdvertisementModel.fromJson(json)
+      model.save
+  		Ok("Ok")
+  	} catch {
+			case e: Exception => BadRequest("Not ok")
+  	}
   }
 
   def delete(uid: Int) = Action {
-  	AdvertisementModel.find.where.eq("uid", uid).findUnique.delete
-  	Ok("OK");
+    try {
+    	AdvertisementModel.find.where.eq("uid", uid).findUnique.delete
+    	Ok("OK");
+    } catch {
+      case e: Exception => BadRequest("Not ok")
+    }
   }
 
 }
