@@ -23,16 +23,29 @@ class Advertisement extends Controller {
   	Ok(result);
   }
 
-  def post = Action { request =>
-	request.body.asJson.map { json =>
-		try {
-			val model = AdvertisementModel.fromJson(json)
-			model.save
-			Ok("Ok")
-		} catch {
-			case e: Exception => BadRequest("Not ok")
-		}
-	}.getOrElse {
+  def post(uid: Int) = Action { request =>
+    val json = request.body.asJson.get
+    try {
+      val nm = AdvertisementModel.fromJson(json)
+      val om = AdvertisementModel.find.where.eq("uid", uid).findUnique
+      om.assign(nm)
+      om.save
+      Ok("Ok")
+    } catch {
+      case e: Exception => BadRequest("Not ok")
+    }
+  }
+
+  def put = Action { request =>
+	  request.body.asJson.map { json =>
+  		try {
+  			val model = AdvertisementModel.fromJson(json)
+  			model.save
+  			Ok("Ok")
+  		} catch {
+  			case e: Exception => BadRequest("Not ok")
+  		}
+  	}.getOrElse {
       BadRequest("Not ok")
     }
   }

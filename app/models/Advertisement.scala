@@ -88,4 +88,14 @@ class Advertisement extends Model {
     )
     return result
   }
+
+  def assign(model: Advertisement) : Advertisement = {
+    this.title = model.title
+    this.price = model.price
+    this.fuel = model.fuel
+    this.mileage = model.mileage
+    this.state = model.state
+    this.registration = model.registration
+    return this
+  }
 }
