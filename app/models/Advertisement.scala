@@ -9,7 +9,29 @@ import play.data.format._
 import play.data.validation._
 
 object Advertisement {
-    var find: Model.Finder[Integer, Advertisement] = new Model.Finder(classOf[Advertisement])
+  var find: Model.Finder[Integer, Advertisement] = new Model.Finder(classOf[Advertisement])
+    
+  @throws(classOf[Exception])
+  def fromJson(json: JsValue) : Advertisement = {
+    val df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+    val title = (json \ "title").asOpt[String]
+    val price = (json \ "price").asOpt[Int]
+    val mileage = (json \ "mileage").asOpt[Int]
+    val registration = (json \ "registration").asOpt[String]
+    val state = (json \ "state").asOpt[Boolean]
+
+    val date = df.parse(registration.get)
+    val check = (title.getOrElse(null) == null || price.getOrElse(null) == null || mileage.getOrElse(null) == null || state.getOrElse(null) == null)
+    if (check == true) throw new IllegalArgumentException
+
+    val model = new Advertisement
+    model.title = title.get
+    model.price = price.get
+    model.mileage = mileage.get
+    model.state = state.get
+    model.registration = date
+    return model
+  }
 }
 
 @Entity

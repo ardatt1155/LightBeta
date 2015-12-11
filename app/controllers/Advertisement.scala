@@ -21,39 +21,17 @@ class Advertisement extends Controller {
   	Ok(result);
   }
 
-  def post(uid: Int) = Action { request =>
+  def post = Action { request =>
 	request.body.asJson.map { json =>
-		val df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-
-		val title = (json \ "title").asOpt[String]
-		val price = (json \ "price").asOpt[Int]
-		val mileage = (json \ "mileage").asOpt[Int]
-		val registration = (json \ "registration").asOpt[String]
-		val state = (json \ "state").asOpt[Boolean]
-
 		try {
-			val date = df.parse(registration.get)
-
-			if (title.getOrElse(null) == null || price.getOrElse(null) == null
-				|| mileage.getOrElse(null) == null || state.getOrElse(null) == null)
-			{
-				BadRequest("Missing fields")
-			} else
-			{
-				val model = new AdvertisementModel
-				model.title = title.get
-				model.price = price.get
-				model.mileage = mileage.get
-				model.state = state.get
-				model.registration = date
-				model.save
-				Ok("Ok")
-			}
+			val model = AdvertisementModel.fromJson(json)
+			model.save
+			Ok("Ok")
 		} catch {
-			case e: Exception => BadRequest("Bad fields")
+			case e: Exception => BadRequest("Not ok")
 		}
 	}.getOrElse {
-      BadRequest("Json Missing")
+      BadRequest("Not ok")
     }
   }
 

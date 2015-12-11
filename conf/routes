@@ -11,7 +11,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # Advertisements
 GET     /advertisements/show 		controllers.Advertisement.show
 GET     /advertisements/:uid		controllers.Advertisement.get(uid: Int)
-POST    /advertisements/:uid		controllers.Advertisement.post(uid: Int)
+POST    /advertisements/post		controllers.Advertisement.post()
 DELETE  /advertisements/:uid		controllers.Advertisement.delete(uid: Int)
 
 # curl --request GET http://localhost:9000/advertisements/show
