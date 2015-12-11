@@ -2,3 +2,26 @@ This is your new Play application
 =================================
 
 This file will be packaged with your application, when using `activator dist`.
+
+## REST operations to add some sample data
+# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample A", "price":11, "state":true, "mileage":14, "registration":"01/01/2015", "fuel":"Diesel"}' http://localhost:9000/advertisements/post
+# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample B", "price":21, "state":false, "mileage":23, "registration":"01/03/2015", "fuel":"Diesel"}' http://localhost:9000/advertisements/post
+# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample C", "price":31, "state":false, "mileage":22, "registration":"03/01/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/post
+# curl --request POST --header "Content-type: application/json" --data '{"title":"Sample D", "price":41, "state":true, "mileage":21, "registration":"03/03/2015", "fuel":"Gasoline"}' http://localhost:9000/advertisements/post
+
+## REST operations to list all data
+# curl --request GET http://localhost:9000/advertisements/show
+# curl --request GET http://localhost:9000/advertisements/show?sort=uid
+# curl --request GET http://localhost:9000/advertisements/show?sort=title
+# curl --request GET http://localhost:9000/advertisements/show?sort=price
+# curl --request GET http://localhost:9000/advertisements/show?sort=fuel
+# curl --request GET http://localhost:9000/advertisements/show?sort=state
+# curl --request GET http://localhost:9000/advertisements/show?sort=mileage
+# curl --request GET http://localhost:9000/advertisements/show?sort=registration
+
+## To fetch an advertisement by UID
+# curl --request GET http://localhost:9000/advertisements/1
+
+## To delete an advertisement by UID
+# curl --request DELETE http://localhost:9000/advertisements/1
+

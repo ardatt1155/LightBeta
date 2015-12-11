@@ -7,6 +7,7 @@ create table advertisement (
   uid                       bigint auto_increment not null,
   title                     varchar(255),
   price                     integer,
+  fuel                      varchar(255),
   state                     tinyint(1) default 0,
   mileage                   integer,
   registration              datetime(6),

@@ -10,6 +10,9 @@ import play.data.validation._
 import scala.collection.JavaConversions._
 
 object Advertisement {
+  val Diesel = "Diesel"
+  val Gasoline = "Gasoline"
+
   var find: Model.Finder[Integer, Advertisement] = new Model.Finder(classOf[Advertisement])
     
   @throws(classOf[Exception])
@@ -20,14 +23,17 @@ object Advertisement {
     val mileage = (json \ "mileage").asOpt[Int]
     val registration = (json \ "registration").asOpt[String]
     val state = (json \ "state").asOpt[Boolean]
+    val fuel = (json \ "fuel").asOpt[String]
 
     val date = df.parse(registration.get)
-    val check = (title.getOrElse(null) == null || price.getOrElse(null) == null || mileage.getOrElse(null) == null || state.getOrElse(null) == null)
+    val check = (title.getOrElse(null) == null || price.getOrElse(null) == null || mileage.getOrElse(null) == null || state.getOrElse(null) == null
+      || fuel.getOrElse(null) == null || (fuel.get != Advertisement.Diesel && fuel.get != Advertisement.Gasoline))
     if (check == true) throw new IllegalArgumentException
 
     val model = new Advertisement
     model.title = title.get
     model.price = price.get
+    model.fuel = fuel.get
     model.mileage = mileage.get
     model.state = state.get
     model.registration = date
@@ -55,6 +61,10 @@ class Advertisement extends Model {
   @Constraints.Required
   @Constraints.Min(0)
   var price: Int = _
+
+  @Constraints.Required
+  @Constraints.MaxLength(value = 128)
+  var fuel: String = _
 
   @Constraints.Required
   var state: Boolean = _
