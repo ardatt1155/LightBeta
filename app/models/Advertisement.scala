@@ -1,8 +1,10 @@
 package models
 
 import java.util._
+import java.text._
 import javax.persistence._
 import com.avaje.ebean._
+import play.api.libs.json._
 import play.data.format._
 import play.data.validation._
 
@@ -34,4 +36,17 @@ class Advertisement extends Model {
   @Constraints.Required
   @Formats.DateTime(pattern = "dd/MM/yyyy")
   var registration: Date = new Date()
+
+  def toJson : JsValue = {
+    val df = new SimpleDateFormat("dd/MM/yyyy")
+    val result: JsValue = Json.obj(
+      "uid" -> JsNumber(BigDecimal(this.uid)),
+      "title" -> JsString(this.title),
+      "price" -> JsNumber(BigDecimal(this.price)),
+      "state" -> JsBoolean(state),
+      "mileage" -> JsNumber(BigDecimal(this.mileage)),
+      "registration" -> JsString(df.format(this.registration))
+    )
+    return result
+  }
 }

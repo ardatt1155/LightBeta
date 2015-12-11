@@ -3,7 +3,6 @@ package controllers
 import models.{Advertisement => AdvertisementModel}
 import play.api.Play.current
 import play.api._
-import play.api.libs.json._
 import play.api.mvc._
 import java.util._
 import java.text._
@@ -18,7 +17,8 @@ class Advertisement extends Controller {
 
   def get(uid: Int) = Action {
   	val model = AdvertisementModel.find.where.eq("uid", uid).findUnique
-  	Ok(model.toString);
+  	val result = model.toJson
+  	Ok(result);
   }
 
   def post(uid: Int) = Action { request =>
@@ -58,9 +58,8 @@ class Advertisement extends Controller {
   }
 
   def delete(uid: Int) = Action {
-  	val model = AdvertisementModel.find.where.eq("uid", uid).findUnique
-  	model.delete
-  	Ok("Ok");
+  	AdvertisementModel.find.where.eq("uid", uid).findUnique.delete
+  	Ok("OK");
   }
 
 }
