@@ -1,39 +1,52 @@
 package controllers
 
+import models.{Advertisement => AdvertisementModel}
+import play.api.Play.current
 import play.api._
+import play.api.libs.json._
 import play.api.mvc._
-import models._
 import java.util._
 import java.text._
 
 class Advertisement extends Controller {
 
-  def show = Action {
-  	val x = new Advertisement()
-  	System.out.println(x.toString())
-    Ok("Hello world")
+  def show = Action { request =>
+  	val sort = request.queryString.get("sort").flatMap(_.headOption).getOrElse("uid")
+  	val models = AdvertisementModel.find.orderBy(sort).findList  	
+  	Ok(models.toString)
   }
 
   def get(uid: Int) = Action { request =>
-  	val sort = request.queryString.get("sort").flatMap(_.headOption).getOrElse("uid");
   	Ok("Got " + uid);
   }
 
   def post(uid: Int) = Action { request =>
 	request.body.asJson.map { json =>
 		val df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-		val title = (json \ "title").asOpt[String].getOrElse(null)
-		val price = (json \ "price").asOpt[Int].getOrElse(null)
-		val mileage = (json \ "mileage").asOpt[Int].getOrElse(null)
-		val registration = (json \ "registration").asOpt[String].getOrElse(null)
-		val state = (json \ "state").asOpt[Int].getOrElse(null)
+
+		val title = (json \ "title").asOpt[String]
+		val price = (json \ "price").asOpt[Int]
+		val mileage = (json \ "mileage").asOpt[Int]
+		val registration = (json \ "registration").asOpt[String]
+		val state = (json \ "state").asOpt[Boolean]
+
 		try {
-			val date = df.parse(registration)
-			if (title == null || price == null || mileage == null || state == null) {
+			val date = df.parse(registration.get)
+
+			if (title.getOrElse(null) == null || price.getOrElse(null) == null
+				|| mileage.getOrElse(null) == null || state.getOrElse(null) == null)
+			{
 				BadRequest("Missing fields")
-			} else {
-				System.out.println(date)
-				Ok(title + price + mileage)
+			} else
+			{
+				val model = new AdvertisementModel
+				model.title = title.get
+				model.price = price.get
+				model.mileage = mileage.get
+				model.state = state.get
+				model.registration = date
+				model.save
+				Ok("Ok")
 			}
 		} catch {
 			case e: Exception => BadRequest("Bad fields")

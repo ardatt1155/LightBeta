@@ -6,6 +6,10 @@ import com.avaje.ebean._
 import play.data.format._
 import play.data.validation._
 
+object Advertisement {
+    var find: Model.Finder[Integer, Advertisement] = new Model.Finder(classOf[Advertisement])
+}
+
 @Entity
 class Advertisement extends Model {
 
