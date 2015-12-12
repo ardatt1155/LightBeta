@@ -7,6 +7,60 @@ var application = express();
 mongoose.connect('mongodb://moose:moose@ds027345.mongolab.com:27345/moth');
 application.use(express.static(__dirname + '/public'));
 
+
+var database = mongoose.connection;
+database.on('error', console.error.bind(console, 'Connection error.'));
+database.once('open', () => {
+	console.log('Connection complete.');
+});
+
+
+var Schema = mongoose.Schema;
+
+var TodoSchema = new Schema({
+	title: String,
+	author: String,
+	description: String,
+	when: {
+		type: Date,
+		default: Date.now
+	}
+});
+var Todo = mongoose.model('Todo', TodoSchema);
+
+
+
+application.get('/api/todos/show', function (request, response) {
+	Todo.find(function (error, models) {
+		if (error) response.send(error)
+		else response.json(models);
+	});
+});
+
+application.put('/api/todos/put', function (request, response) {
+	Todo.create({
+		text: request.body.text,
+		done: false
+	}, function (error, response) {
+		if (error) response.send(error)
+		else Todo.find(function (error, response) {
+			if (error) response.send(error);
+			else response.json(todos);
+		});
+	});
+});
+
+application.delete('/api/todos/:uid', function (request, response) {
+	Todo.remove({
+		_id: request.params.uid
+	}, function (error, model) {
+		if (error) response.send(error);
+		else response.json(model);
+	});
+});
+
+
+
 application.listen(8080);
 console.log("App listening on 8080.");
 
