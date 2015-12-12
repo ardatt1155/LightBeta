@@ -1,11 +1,12 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
+var path = require('path');
 
 var application = express();
 
 mongoose.connect('mongodb://moose:moose@ds027345.mongolab.com:27345/moth');
-application.use('/static', express.static(__dirname + '/angular'));
+application.use('/angular', express.static('angular'));
 
 
 var database = mongoose.connection;
@@ -61,7 +62,7 @@ application.delete('/api/todos/:uid', function (request, response) {
 
 
 application.get('/index', function (request, response) {
-	response.sendfile('./angular/index.html');
+	response.sendFile(path.resolve(__dirname + '/../angular/index.html'));
 });
 
 
