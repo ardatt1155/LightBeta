@@ -7,29 +7,6 @@ var LogError = function (data) {
 	console.log('Antodo Error: ' + data);
 };
 
-Antodo.controller("OnlineController", function ($scope, $http) {
-	$scope.form = {};
-
-	$http.get('/api/todos').success((data) => {
-		$scope.todos = data;
-		console.log(data);
-	}).error(LogError);
-
-	$scope.create = function () {
-		$http.put('/api/todos/put', $scope.form).success((data) => {
-			$scope.form = {};
-			$scope.todos = data;
-		}).error(LogError);
-	};
-
-	$scope.delete = function () {
-		$http.delete('/api/todos/' + uid).success((data) => {
-			$scope.todos = data;
-		}).error(LogError);
-	};
-});
-
-const StorageScrapKey = 'Scraps';
 class Scrap {
 	constructor(description, position) {
 		this.description = description;
@@ -38,12 +15,41 @@ class Scrap {
 	}
 }
 
-var storage = window.localStorage;
+
+Antodo.factory('$scrapsdb', ['$window', function ($window) {
+	const StorageScrapKey = 'Scraps';
+	var storage = $window.localStorage;
+
+	let service = {};
+	service.store = (data) => {
+		storage.setItem(StorageScrapKey, angular.toJson(data));
+	};
+	service.fetch = () => {
+		return JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([]));
+	};
+	service.listeners = [];
+	service.subscribe = (listener) => {
+		listener = { listener: listener, uid: uuid.v4() };
+		service.listeners.push(listener);
+		return listener.uid;
+	};
+	service.unsubscribe = (uid) => {
+		let index = service.listeners.findIndex(element => element.uid.valueOf() == uid.valueOf());
+		if (index < 0) return;
+		service.listeners.splice(index, 1);
+	};
+	let xtabsync = (event) => {
+		if (event.key != StorageScrapKey) return;
+		service.listeners.forEach(x => x.listener());
+	};
+	$window.addEventListener('storage', xtabsync, false);
+	return service;
+}]);
 
 
-Antodo.controller("OfflineController", function ($scope) {
+Antodo.controller("OfflineController", function ($scope, $scrapsdb) {
 	$scope.hello = "Hello world";
-	$scope.scraps = JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([]));
+	$scope.scraps = $scrapsdb.fetch();
 	$scope.incoming = '';
 	$scope.submit = () => {
 		if ($scope.incoming.length < 1) return;
@@ -51,23 +57,18 @@ Antodo.controller("OfflineController", function ($scope) {
 		$scope.scraps.forEach(element => rank = element.position > rank ? element.position : rank);
 		$scope.scraps.push(new Scrap($scope.incoming, rank + 1));
 		$scope.incoming = '';
-		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
+		$scrapsdb.store($scope.scraps);
 	};
 	$scope.check = (scrap) => {
 		let index = $scope.scraps.findIndex(element => element.uid.valueOf() == scrap.uid.valueOf());
 		if (index < 0) return;
 		$scope.scraps.splice(index, 1);
-		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
+		$scrapsdb.store($scope.scraps);
 	};
 	$scope.reset = () => {
 		$scope.scraps = [];
-		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
+		$scrapsdb.store($scope.scraps);
 	};
-	let xtabsync = (event) => {
-		if (event.key != StorageScrapKey) return;
-		$scope.$apply(() => $scope.scraps = JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([])));
-	};
-	window.addEventListener('storage', xtabsync, false);
+	$scrapsdb.subscribe(() => $scope.$apply(() => $scope.scraps = $scrapsdb.fetch()));
 });
 
-console.log("Sourced core.js");
