@@ -47,7 +47,9 @@ Antodo.controller("OfflineController", function ($scope) {
 	$scope.incoming = '';
 	$scope.submit = () => {
 		if ($scope.incoming.length < 1) return;
-		$scope.scraps.push(new Scrap($scope.incoming, $scope.scraps.length));
+		let rank = 0;
+		$scope.scraps.forEach(element => rank = element.position > rank ? element.position : rank);
+		$scope.scraps.push(new Scrap($scope.incoming, rank + 1));
 		$scope.incoming = '';
 		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
 	};
