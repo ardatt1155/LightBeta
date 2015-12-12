@@ -5,10 +5,22 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
 	    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
     	<script src="angular/core.js"></script>
+    	<script src="nm/node-uuid/uuid.js"></script>
 	</head>
 	<body>
 		<div id="AntodoOfflineContainer" ng-controller="OfflineController">
-			<span>{{ hello }}</span>
+			<span>{{ hello }}</span></br>
+			<form novalidate>
+				<input type="text" ng-model="incoming"></input>
+				<input type="submit" ng-click="submit()"></input>
+			</form>
+			<button ng-click="reset()">Reset your list</button>
+			<ul>
+				<li ng-repeat="scrap in scraps | orderBy : 'position'">
+					<span>{{ scrap.description }}</span>
+					<button ng-click="check(scrap)">Done</button>
+				</li>
+			</ul>
 		</div>
 	</body>
 </html>

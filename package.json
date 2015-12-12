@@ -25,6 +25,7 @@
     "kerberos": "0.0.17",
     "mongoose": "^4.3.1",
     "node-inspector": "^0.12.5",
+    "node-uuid": "^1.4.7",
     "nodemon": "^1.8.1"
   }
 }
