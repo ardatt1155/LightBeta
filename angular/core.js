@@ -29,7 +29,7 @@ Antodo.controller("OnlineController", function ($scope, $http) {
 	};
 });
 
-
+const StorageScrapKey = 'Scraps';
 class Scrap {
 	constructor(description, position) {
 		this.description = description;
@@ -43,24 +43,29 @@ var storage = window.localStorage;
 
 Antodo.controller("OfflineController", function ($scope) {
 	$scope.hello = "Hello world";
-	$scope.scraps = JSON.parse(storage.getItem('Scraps') || JSON.stringify([]));
+	$scope.scraps = JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([]));
 	$scope.incoming = '';
 	$scope.submit = () => {
 		if ($scope.incoming.length < 1) return;
 		$scope.scraps.push(new Scrap($scope.incoming, $scope.scraps.length));
 		$scope.incoming = '';
-		storage.setItem('Scraps', JSON.stringify($scope.scraps));
+		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
 	};
 	$scope.check = (scrap) => {
 		let index = $scope.scraps.findIndex(element => element.uid.valueOf() == scrap.uid.valueOf());
 		if (index < 0) return;
 		$scope.scraps.splice(index, 1);
-		storage.setItem('Scraps', JSON.stringify($scope.scraps));
+		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
 	};
 	$scope.reset = () => {
 		$scope.scraps = [];
-		storage.setItem('Scraps', JSON.stringify($scope.scraps));
+		storage.setItem(StorageScrapKey, JSON.stringify($scope.scraps));
 	};
+	let xtabsync = (event) => {
+		if (event.key != StorageScrapKey) return;
+		$scope.$apply(() => $scope.scraps = JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([])));
+	};
+	window.addEventListener('storage', xtabsync, false);
 });
 
 console.log("Sourced core.js");
