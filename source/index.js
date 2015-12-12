@@ -62,8 +62,8 @@ application.delete('/api/todos/:uid', function (request, response) {
 });
 
 
-application.get('/index', function (request, response) {
-	response.sendFile(path.resolve(__dirname + '/../angular/index.html'));
+application.get('/antodo', function (request, response) {
+	response.sendFile(path.resolve(__dirname + '/../angular/antodo.html'));
 });
 
 
