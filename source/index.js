@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var application = express();
 
 mongoose.connect('mongodb://moose:moose@ds027345.mongolab.com:27345/moth');
-application.use(express.static(__dirname + '/public'));
+application.use('/static', express.static(__dirname + '/angular'));
 
 
 var database = mongoose.connection;
@@ -65,7 +65,10 @@ application.get('/index', function (request, response) {
 });
 
 
-application.listen(8080);
-console.log("App listening on 8080.");
+var server = application.listen(8080, function () {
+	var host = server.address().address;
+  	var port = server.address().port;
+	console.log('Application listening at http://%s:%s', host, port);
+});
 
 
