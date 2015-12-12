@@ -60,6 +60,10 @@ application.delete('/api/todos/:uid', function (request, response) {
 });
 
 
+application.get('/index', function (request, response) {
+	response.sendfile('./angular/index.html');
+});
+
 
 application.listen(8080);
 console.log("App listening on 8080.");
