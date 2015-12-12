@@ -1,20 +1,9 @@
 
 "use strict";
 
-var Antodo = angular.module('Antodo', ['ngAnimate']);
+angular.module('Antodo', ['ngAnimate']);
 
-var LogError = function (data) {
-	console.log('Antodo Error: ' + data);
-};
-
-class Scrap {
-	constructor(description) {
-		this.description = description;
-		this.uid = uuid.v4();
-	}
-}
-
-Antodo.directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrapsdb) {
+angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrapsdb) {
 	var directive = {
 		restrict: 'A',
 		scope: {
@@ -48,7 +37,7 @@ Antodo.directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrap
 	return directive;
 }]);
 
-Antodo.factory('$scrapsdb', ['$window', function ($window) {
+angular.module('Antodo').factory('$scrapsdb', ['$window', function ($window) {
 	const StorageScrapKey = 'Scraps';
 	var storage = $window.localStorage;
 
@@ -79,13 +68,14 @@ Antodo.factory('$scrapsdb', ['$window', function ($window) {
 }]);
 
 
-Antodo.controller("OfflineController", function ($scope, $scrapsdb) {
+angular.module('Antodo').controller("OfflineController", function ($scope, $scrapsdb) {
+	let buildScrap = (description) => { return {description: description, uid: uuid.v4()}; };
 	$scope.hello = "Hello world";
 	$scope.scraps = $scrapsdb.fetch();
 	$scope.incoming = '';
 	$scope.submit = () => {
 		if ($scope.incoming.length < 1) return;
-		$scope.scraps.push(new Scrap($scope.incoming));
+		$scope.scraps.push(buildScrap($scope.incoming));
 		$scope.incoming = '';
 		$scrapsdb.store($scope.scraps);
 	};
