@@ -5,4 +5,26 @@
 	font-family: cursive;
 }
 
+#AntodoOfflineContainer > ul > li {
+	line-height: 20px;
+}
+
+#AntodoOfflineContainer > ul > li.ng-move,
+#AntodoOfflineContainer > ul > li.ng-enter,
+#AntodoOfflineContainer > ul > li.ng-leave {
+	transition: all linear 0.5s;
+}
+
+#AntodoOfflineContainer > ul > li.ng-leave.ng-leave-active,
+#AntodoOfflineContainer > ul > li.ng-move,
+#AntodoOfflineContainer > ul > li.ng-enter {
+	max-height: 0;
+}
+
+#AntodoOfflineContainer > ul > li.ng-leave,
+#AntodoOfflineContainer > ul > li.ng-move.ng-move-active,
+#AntodoOfflineContainer > ul > li.ng-enter.ng-enter-active {
+	max-height: 20px;
+}
+
 

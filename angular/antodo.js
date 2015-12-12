@@ -1,7 +1,7 @@
 
 "use strict";
 
-var Antodo = angular.module('Antodo', []);
+var Antodo = angular.module('Antodo', ['ngAnimate']);
 
 var LogError = function (data) {
 	console.log('Antodo Error: ' + data);
