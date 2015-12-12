@@ -8,13 +8,45 @@ var LogError = function (data) {
 };
 
 class Scrap {
-	constructor(description, position) {
+	constructor(description) {
 		this.description = description;
-		this.position = position;
 		this.uid = uuid.v4();
 	}
 }
 
+Antodo.directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrapsdb) {
+	var directive = {
+		restrict: 'A',
+		scope: {
+			scraps: '=',
+			scrap: '='
+		},
+		link: function ($scope, $element, $attributes, $controller, $transclude) {
+			let element = $element[0];
+			element.addEventListener('drop', (event) => {
+				let source = event.dataTransfer.getData('source');
+				let indexS = $scope.scraps.findIndex(x => x.uid.valueOf() == source.valueOf());
+				let indexT = $scope.scraps.findIndex(x => x.uid.valueOf() == $scope.scrap.uid.valueOf());
+				if (indexS < 0 || indexT < 0) return;
+				source = $scope.scraps[indexS];
+				$scope.$apply(() => {
+					$scope.scraps.splice(indexS, 1);
+					$scope.scraps.splice(indexT, 0, source);
+					$scrapsdb.store($scope.scraps);
+				});
+			});
+			let canceller = (event) => {
+				event.preventDefault();
+			};
+			element.addEventListener('dragstart', (event) => {
+				event.dataTransfer.setData('source', $scope.scrap.uid);
+			});
+			element.addEventListener('dragenter', canceller);
+			element.addEventListener('dragover', canceller);
+		}
+	};
+	return directive;
+}]);
 
 Antodo.factory('$scrapsdb', ['$window', function ($window) {
 	const StorageScrapKey = 'Scraps';
@@ -53,9 +85,7 @@ Antodo.controller("OfflineController", function ($scope, $scrapsdb) {
 	$scope.incoming = '';
 	$scope.submit = () => {
 		if ($scope.incoming.length < 1) return;
-		let rank = 0;
-		$scope.scraps.forEach(element => rank = element.position > rank ? element.position : rank);
-		$scope.scraps.push(new Scrap($scope.incoming, rank + 1));
+		$scope.scraps.push(new Scrap($scope.incoming));
 		$scope.incoming = '';
 		$scrapsdb.store($scope.scraps);
 	};

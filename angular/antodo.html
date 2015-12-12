@@ -18,7 +18,7 @@
 			</form>
 			<button ng-click="reset()">Reset your list</button>
 			<ul>
-				<li ng-repeat="scrap in scraps | orderBy : 'position'">
+				<li ng-repeat="scrap in scraps" draggable="true" antodo-dnd data-scraps="scraps" data-scrap="scrap">
 					<span>{{ scrap.description }}</span>
 					<button ng-click="check(scrap)">Done</button>
 				</li>
