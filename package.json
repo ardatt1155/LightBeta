@@ -2,7 +2,7 @@
   "name": "angular-todo",
   "version": "1.0.0",
   "description": "TodoApp with Angular and Node",
-  "main": "index.js",
+  "main": "source/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/ardatt1155/LightBeta/issues"
   },
-  "homepage": "https://github.com/ardatt1155/LightBeta#readme"
+  "homepage": "https://github.com/ardatt1155/LightBeta#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "kerberos": "0.0.17",
+    "mongoose": "^4.3.1"
+  }
 }
