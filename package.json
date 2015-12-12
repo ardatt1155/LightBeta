@@ -1,0 +1,23 @@
+{
+  "name": "angular-todo",
+  "version": "1.0.0",
+  "description": "TodoApp with Angular and Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ardatt1155@github.com/ardatt1155/LightBeta.git"
+  },
+  "keywords": [
+    "angular",
+    "node"
+  ],
+  "author": "ardatt1155",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ardatt1155/LightBeta/issues"
+  },
+  "homepage": "https://github.com/ardatt1155/LightBeta#readme"
+}
