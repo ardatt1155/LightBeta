@@ -8,6 +8,10 @@
 
 angular.module('Antodo', ['ngAnimate']);
 
+angular.module('Antodo').constant('$antodoconsts', {
+	StorageScrapKey: 'Scraps'
+});
+
 angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrapsdb) {
 	var directive = {
 		restrict: 'A',
@@ -42,8 +46,8 @@ angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', functio
 	return directive;
 }]);
 
-angular.module('Antodo').factory('$scrapsdb', ['$window', function ($window) {
-	const StorageScrapKey = 'Scraps';
+angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', function ($window, $antodoconsts) {
+	const StorageScrapKey = $antodoconsts.StorageScrapKey;
 	var storage = $window.localStorage;
 
 	let service = {};

@@ -1,8 +1,15 @@
 
+"use strict";
+
 describe("Hello testing", function() {
-  it("Tests hello world", function() {
-    expect(true).toBe(true);
-  });
+
+	beforeEach(module('Antodo'));
+
+	it("Tests Antodo constants", inject(function($injector) {
+		const actual = $injector.get('$antodoconsts');
+		expect(actual.StorageScrapKey).toBe('Scraps');
+		expect(Object.keys(actual).length).toBe(1);
+  	}));
 });
 
 
