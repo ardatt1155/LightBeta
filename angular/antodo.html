@@ -13,17 +13,17 @@
 		<div id="AntodoOfflineContainer" ng-controller="OfflineController">
 			<span>{{ hello }}</span></br>
 			<form novalidate>
-				<input type="text" ng-model="incoming"></input>
-				<input type="submit" ng-click="submit()"></input>
+				<input id="incoming" type="text" ng-model="incoming"></input>
+				<input id="submit" type="submit" ng-click="submit()"></input>
+				<button id="reset" ng-click="reset()">Reset your list</button>
 			</form>
-			<button ng-click="reset()">Reset your list</button>
-			<ul>
+			<ul id="scraps">
 				<li ng-repeat="scrap in scraps" draggable="true" antodo-dnd data-scraps="scraps" data-scrap="scrap">
 					<span>{{ scrap.description }}</span>
 					<button ng-click="check(scrap)">Done</button>
 				</li>
-				<li ng-if="scraps.length == 0">
-					<strong>Nothing to do for you.</strong>
+				<li id="noscrap" ng-if="scraps.length == 0">
+					<strong>Watch Star Wars ... again!</strong>
 				</li>
 			</ul>
 		</div>
