@@ -21,7 +21,7 @@ module.exports = function(config) {
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/node-uuid/uuid.js',
       'angular/*.js',
-      'angular-test/*.js'
+      'angular-test/antodo-karma.js'
     ],
 
 
