@@ -1,6 +1,11 @@
 
 "use strict";
 
+// -- WEBPACK --
+//require("./../node_modules/angular/angular.js");
+//require("./../node_modules/angular-animate/angular-animate.js");
+//require("./../node_modules/node-uuid/uuid.js");
+
 angular.module('Antodo', ['ngAnimate']);
 
 angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrapsdb) {
