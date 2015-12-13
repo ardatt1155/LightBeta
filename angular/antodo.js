@@ -49,6 +49,7 @@ angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', functio
 angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', function ($window, $antodoconsts) {
 	const StorageScrapKey = $antodoconsts.StorageScrapKey;
 	var storage = $window.localStorage;
+	var listeners = [];
 
 	let service = {};
 	service.store = (data) => {
@@ -57,20 +58,19 @@ angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', funct
 	service.fetch = () => {
 		return JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([]));
 	};
-	service.listeners = [];
 	service.subscribe = (listener) => {
 		listener = { listener: listener, uid: uuid.v4() };
-		service.listeners.push(listener);
+		listeners.push(listener);
 		return listener.uid;
 	};
 	service.unsubscribe = (uid) => {
-		let index = service.listeners.findIndex(element => element.uid.valueOf() == uid.valueOf());
+		let index = listeners.findIndex(element => element.uid.valueOf() == uid.valueOf());
 		if (index < 0) return;
-		service.listeners.splice(index, 1);
+		listeners.splice(index, 1);
 	};
 	let xtabsync = (event) => {
 		if (event.key != StorageScrapKey) return;
-		service.listeners.forEach(x => x.listener());
+		listeners.forEach(x => x.listener());
 	};
 	$window.addEventListener('storage', xtabsync, false);
 	return service;
