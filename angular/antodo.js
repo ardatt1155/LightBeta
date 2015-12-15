@@ -6,10 +6,18 @@
 //require("./../node_modules/angular-animate/angular-animate.js");
 //require("./../node_modules/node-uuid/uuid.js");
 
-angular.module('Antodo', ['ngAnimate']);
+angular.module('Antodo', ['ngAnimate', 'ui.router']);
 
 angular.module('Antodo').constant('$antodoconsts', {
 	StorageScrapKey: 'Scraps'
+});
+
+angular.module('Antodo').config(function ($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise('#antodo');
+	$stateProvider.state('#charts', {
+		url: '#charts',
+		template: $('#charts-partial').html()
+	});	
 });
 
 angular.module('Antodo').factory('$antodointercept', function ($q) {
