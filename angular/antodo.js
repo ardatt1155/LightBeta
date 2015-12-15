@@ -12,6 +12,21 @@ angular.module('Antodo').constant('$antodoconsts', {
 	StorageScrapKey: 'Scraps'
 });
 
+angular.module('Antodo').factory('$antodointercept', function ($q) {
+	const interceptor = {
+		responseError: function (config) {
+			var deferred = $q.defer();
+			console.log(config);
+			return deferred.reject(config);
+		}
+	};
+	return interceptor;
+});
+
+angular.module('Antodo').config(function ($httpProvider) {  
+    $httpProvider.interceptors.push('$antodointercept');
+});
+
 angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', function ($window, $scrapsdb) {
 	var directive = {
 		restrict: 'A',
@@ -77,7 +92,7 @@ angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', funct
 }]);
 
 
-angular.module('Antodo').controller("OfflineController", function ($scope, $scrapsdb) {
+angular.module('Antodo').controller("OfflineController", function ($scope, $scrapsdb, $http) {
 	let buildScrap = (description) => { return {description: description, uid: uuid.v4()}; };
 	$scope.hello = "Antodo Application";
 	$scope.greetings = "This is the best application to manage your task list";
@@ -100,5 +115,9 @@ angular.module('Antodo').controller("OfflineController", function ($scope, $scra
 		$scrapsdb.store($scope.scraps);
 	};
 	$scrapsdb.subscribe(() => $scope.$apply(() => $scope.scraps = $scrapsdb.fetch()));
+	$scope.quote = 'Querying quote of the day .... ';
+	$http.get('http://api.theysaidso.com/qod').then((response) => {
+		$scope.quote = response ? response.data.contents.quotes[0].quote : 'TheySaidSo ain\'t talking to us. :(';
+	});
 });
 
