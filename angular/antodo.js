@@ -79,7 +79,8 @@ angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', funct
 
 angular.module('Antodo').controller("OfflineController", function ($scope, $scrapsdb) {
 	let buildScrap = (description) => { return {description: description, uid: uuid.v4()}; };
-	$scope.hello = "Hello. Manage your todo list here.";
+	$scope.hello = "Antodo Application";
+	$scope.greetings = "This is the best application to manage your task list";
 	$scope.scraps = $scrapsdb.fetch();
 	$scope.incoming = '';
 	$scope.submit = () => {

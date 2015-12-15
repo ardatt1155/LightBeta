@@ -11,7 +11,7 @@ describe('AntodoProtractorSuite 1', function () {
 	});
 
 	it('Antodo should greet', function () {
-		expect(element(by.binding('hello')).getText()).toBe('Hello. Manage your todo list here.');
+		expect(element(by.binding('hello')).getText()).toBe('Antodo Application');
 	});
 
 	it('Antodo should reset', function () {
@@ -19,7 +19,7 @@ describe('AntodoProtractorSuite 1', function () {
 		reset.click();
 		let list = element.all((by.repeater('scrap in scraps')));
 		expect(list.count()).toBe(0);
-		expect(element(by.id('noscrap')).getText()).toBe('Watch Star Wars ... again!');
+		expect(element(by.id('noscrap')).getText()).toBe('You have nothing to do.');
 	});
 });
 

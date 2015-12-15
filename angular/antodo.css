@@ -1,9 +1,5 @@
 
 
-#AntodoOfflineContainer > ul > li 
-{
-	font-family: cursive;
-}
 
 #AntodoOfflineContainer > ul > li {
 	line-height: 20px;
@@ -27,4 +23,8 @@
 	max-height: 20px;
 }
 
+.row {
+	margin-left: 5px;
+	margin-right: 5px;
+}
 

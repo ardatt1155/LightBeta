@@ -1,31 +1,45 @@
 
 <html ng-app="Antodo">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Antodo Application</title>
 		<script src="nm/jquery/dist/jquery.js"></script>
 	    <script src="nm/angular/angular.js"></script>
 	    <script src="nm/angular-animate/angular-animate.js"></script>
     	<script src="nm/node-uuid/uuid.js"></script>
+    	<script src="nm/bootstrap/dist/js/bootstrap.js"></script>
+    	<link rel="stylesheet" type="text/css" href="nm/bootstrap/dist/css/bootstrap.css"></link>
+    	<link rel="stylesheet" type="text/css" href="nm/bootstrap/dist/css/bootstrap-theme.css"></link>
+
     	<script src="angular/antodo.js"></script>
     	<link rel="stylesheet" type="text/css" href="angular/antodo.css"></link>
 	</head>
 	<body>
-		<div id="AntodoOfflineContainer" ng-controller="OfflineController">
-			<span>{{ hello }}</span></br>
-			<form novalidate>
-				<input id="incoming" type="text" ng-model="incoming"></input>
-				<input id="submit" type="submit" ng-click="submit()"></input>
-				<button id="reset" ng-click="reset()">Reset your list</button>
-			</form>
-			<ul id="scraps">
-				<li ng-repeat="scrap in scraps" draggable="true" antodo-dnd data-scraps="scraps" data-scrap="scrap">
-					<span>{{ scrap.description }}</span>
-					<button ng-click="check(scrap)">Done</button>
-				</li>
-				<li id="noscrap" ng-if="scraps.length == 0">
-					<strong>Watch Star Wars ... again!</strong>
-				</li>
-			</ul>
+		<div id="AntodoOfflineContainer" ng-controller="OfflineController" class="container-fluid">
+			<div class="jumbotron page-header">
+				<h1>{{ ::hello }}</h1>
+				<p>{{ ::greetings }}</p>
+			</div>
+			<div class="row">
+				<input id="incoming" type="text" ng-model="incoming" class="col-sm-8"></input>
+				<button id="submit" ng-click="submit()" class="col-sm-4 btn-success">Submit</button>
+			</div></br></br>
+			<div class="row">
+				<ul id="scraps" class="list-group list-inline">
+					<li ng-repeat="scrap in scraps" draggable="true" antodo-dnd data-scraps="scraps" data-scrap="scrap" class="list-group-item" style="width:33%; min-wdth:200px; display:inline-block;">
+						<span style="width:80%; overflow:hidden; text-overflow:ellipsis; display:inline-block;">
+							{{ scrap.description }}
+						</span>
+						<button ng-click="check(scrap)" class="btn-warning btn-xs" style="float:right;">Done</button>
+					</li>
+					<li id="noscrap" ng-if="scraps.length == 0" class="list-group-item" style="width:100%;">
+						<strong>You have nothing to do.</strong>
+					</li>
+				</ul>
+			</div></br></br>
+			<div class="row">
+				<button id="reset" ng-click="reset()" class="col-xs-12 btn-danger">Reset your list</button>
+			</div>
 		</div>
 	</body>
 </html>
