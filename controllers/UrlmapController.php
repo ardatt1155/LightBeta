@@ -63,6 +63,8 @@ class UrlmapController extends Controller
         $model = new Urlmap();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->hash = 'http://localhost:8888/goto/' . $model->uid;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->uid]);
         } else {
             return $this->render('create', [
