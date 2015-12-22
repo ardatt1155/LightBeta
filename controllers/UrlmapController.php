@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Urlmap;
+use app\components\Urlshortener;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -54,6 +55,17 @@ class UrlmapController extends Controller
     }
 
     /**
+     * Redirects to the original url.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionGoto($id)
+    {
+        $model = $this->findModel($id);
+        $this->redirect($model->url);
+    }
+
+    /**
      * Creates a new Urlmap model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -63,8 +75,12 @@ class UrlmapController extends Controller
         $model = new Urlmap();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->hash = 'http://localhost:8888/goto/' . $model->uid;
+
+            /** @var $shortener \app\components\Urlshortener */
+            $shortener = Yii::$app->get('shortener');
+            $model->hash = $shortener->shorten($model->url);
             $model->save();
+
             return $this->redirect(['view', 'id' => $model->uid]);
         } else {
             return $this->render('create', [

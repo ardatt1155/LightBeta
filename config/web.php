@@ -48,6 +48,9 @@ $config = [
                     'controller' => 'urlmap',
                 ]
             ]
+        ],
+        'shortener' => [
+            'class' => 'app\components\Urlshortener'
         ]
     ],
     'params' => $params,
