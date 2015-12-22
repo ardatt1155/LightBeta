@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'uid',
             'url:url',
-            'hash',
+            'hash:url',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
