@@ -8,6 +8,7 @@ var application = express();
 mongoose.connect('mongodb://moose:moose@ds027345.mongolab.com:27345/moth');
 application.use('/target', express.static('target'));
 application.use('/angular', express.static('angular'));
+application.use('/d3', express.static('d3'));
 application.use('/nm', express.static('node_modules'));
 
 
