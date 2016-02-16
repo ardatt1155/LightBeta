@@ -9,7 +9,8 @@
 angular.module('Antodo', ['ngAnimate', 'ui.router']);
 
 angular.module('Antodo').constant('$antodoconsts', {
-	StorageScrapKey: 'Scraps'
+	ScrapStorageKey: 'Scraps',
+	ScrapCountKey:'ScrpC'
 });
 
 angular.module('Antodo').config(function ($stateProvider, $urlRouterProvider) {
@@ -70,16 +71,21 @@ angular.module('Antodo').directive('antodoDnd', ['$window', '$scrapsdb', functio
 }]);
 
 angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', function ($window, $antodoconsts) {
-	const StorageScrapKey = $antodoconsts.StorageScrapKey;
+	const ScrapStorageKey = $antodoconsts.ScrapStorageKey;
+	const ScrapCountKey = $antodoconsts.ScrapCountKey;
 	var storage = $window.localStorage;
 	var listeners = [];
 
 	let service = {};
+	service.count = (count) => {
+		if (Number.isInteger(count) == false) return Number.parseInt(storage.getItem(ScrapCountKey));
+		else storage.setItem(ScrapCountKey, count);
+	};
 	service.store = (data) => {
-		storage.setItem(StorageScrapKey, angular.toJson(data));
+		storage.setItem(ScrapStorageKey, angular.toJson(data));
 	};
 	service.fetch = () => {
-		return JSON.parse(storage.getItem(StorageScrapKey) || JSON.stringify([]));
+		return JSON.parse(storage.getItem(ScrapStorageKey) || JSON.stringify([]));
 	};
 	service.subscribe = (listener) => {
 		listener = { listener: listener, uid: uuid.v4() };
@@ -92,7 +98,7 @@ angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', funct
 		listeners.splice(index, 1);
 	};
 	let xtabsync = (event) => {
-		if (event.key != StorageScrapKey) return;
+		if (event.key != ScrapStorageKey) return;
 		listeners.forEach(x => x.listener());
 	};
 	$window.addEventListener('storage', xtabsync, false);
@@ -105,12 +111,15 @@ angular.module('Antodo').controller("OfflineController", function ($scope, $scra
 	$scope.hello = "Antodo Application";
 	$scope.greetings = "This is the best application to manage your task list";
 	$scope.scraps = $scrapsdb.fetch();
+	$scope.count = $scrapsdb.count();
 	$scope.incoming = '';
 	$scope.submit = () => {
 		if ($scope.incoming.length < 1) return;
 		$scope.scraps.push(buildScrap($scope.incoming));
 		$scope.incoming = '';
 		$scrapsdb.store($scope.scraps);
+		$scope.count++;
+		$scrapsdb.count($scope.count);
 	};
 	$scope.check = (scrap) => {
 		let index = $scope.scraps.findIndex(element => element.uid.valueOf() == scrap.uid.valueOf());
@@ -120,7 +129,9 @@ angular.module('Antodo').controller("OfflineController", function ($scope, $scra
 	};
 	$scope.reset = () => {
 		$scope.scraps = [];
+		$scope.count = 0;
 		$scrapsdb.store($scope.scraps);
+		$scrapsdb.count($scope.count);
 	};
 	$scrapsdb.subscribe(() => $scope.$apply(() => $scope.scraps = $scrapsdb.fetch()));
 	$scope.quote = 'Querying quote of the day .... ';
@@ -129,3 +140,17 @@ angular.module('Antodo').controller("OfflineController", function ($scope, $scra
 	});
 });
 
+angular.module('Antodo').controller("ChartController", function ($scope, $scrapsdb) {
+	let tag = (strings, ...values) => [0, 1, 2].reduce((p, c, i, a) => p + strings[c] + values[c] + "\n", '');
+	$scope.pie = () => {
+		const selector = 'charts';
+		$scope.count = $scrapsdb.count();
+		$scope.scraps = $scrapsdb.fetch();
+		$scope.progress = $scope.scraps.length;
+		$scope.complete = $scope.count - $scope.progress;
+		(document.getElementById(selector) || {}).innerHTML = "";
+		$scope.message = $scope.count < 1 ? "No data to show charts" : tag`complete = ${$scope.complete} progress = ${$scope.progress} total = ${$scope.count}`;
+		if ($scope.count > 0) D3Pie('#' + selector, $scope.complete, $scope.progress);
+	};
+	$scope.pie();
+});

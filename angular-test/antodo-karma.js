@@ -7,7 +7,7 @@ describe("AntodoSuite 1", function() {
 
 	it("Tests Antodo constants", inject(function ($injector) {
 		const actual = $injector.get('$antodoconsts');
-		expect(actual.StorageScrapKey).toBe('Scraps');
+		expect(actual.ScrapStorageKey).toBe('Scraps');
 		expect(Object.keys(actual).length).toBe(1);
   	}));
 });
@@ -18,14 +18,14 @@ describe("AntodoSuite 2", function() {
 	beforeEach(function () {
 		module(function ($provide) {
       		$provide.constant('$antodoconsts', {
-      			StorageScrapKey: 'ScrapsTest'
+      			ScrapStorageKey: 'ScrapsTest'
       		});
 	    });
 	});
 
 	it("Tests Antodo constant-mock", inject(function ($injector) {
 		const actual = $injector.get('$antodoconsts');
-		expect(actual.StorageScrapKey).toBe('ScrapsTest');
+		expect(actual.ScrapStorageKey).toBe('ScrapsTest');
 		expect(Object.keys(actual).length).toBe(1);
 	}));
 
