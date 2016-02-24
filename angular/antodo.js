@@ -106,8 +106,13 @@ angular.module('Antodo').factory('$scrapsdb', ['$window', '$antodoconsts', funct
 }]);
 
 
-angular.module('Antodo').controller("OfflineController", function ($scope, $scrapsdb, $http) {
+angular.module('Antodo').controller("OfflineController", function ($scope, $scrapsdb, $antodoconsts, $rootScope, $http) {
 	let buildScrap = (description) => { return {description: description, uid: uuid.v4()}; };
+	let persist = () => {
+		$scrapsdb.store($scope.scraps);
+		$scrapsdb.count($scope.count);
+		$rootScope.$broadcast($antodoconsts.ScrapStorageKey + $antodoconsts.ScrapCountKey);
+	};
 	$scope.hello = "Antodo Application";
 	$scope.greetings = "This is the best application to manage your task list";
 	$scope.scraps = $scrapsdb.fetch();
@@ -117,21 +122,19 @@ angular.module('Antodo').controller("OfflineController", function ($scope, $scra
 		if ($scope.incoming.length < 1) return;
 		$scope.scraps.push(buildScrap($scope.incoming));
 		$scope.incoming = '';
-		$scrapsdb.store($scope.scraps);
 		$scope.count++;
-		$scrapsdb.count($scope.count);
+		persist();
 	};
 	$scope.check = (scrap) => {
 		let index = $scope.scraps.findIndex(element => element.uid.valueOf() == scrap.uid.valueOf());
 		if (index < 0) return;
 		$scope.scraps.splice(index, 1);
-		$scrapsdb.store($scope.scraps);
+		persist();
 	};
 	$scope.reset = () => {
 		$scope.scraps = [];
 		$scope.count = 0;
-		$scrapsdb.store($scope.scraps);
-		$scrapsdb.count($scope.count);
+		persist();
 	};
 	$scrapsdb.subscribe(() => $scope.$apply(() => $scope.scraps = $scrapsdb.fetch()));
 	$scope.quote = 'Querying quote of the day .... ';
@@ -140,7 +143,7 @@ angular.module('Antodo').controller("OfflineController", function ($scope, $scra
 	});
 });
 
-angular.module('Antodo').controller("ChartController", function ($scope, $scrapsdb) {
+angular.module('Antodo').controller("ChartController", function ($scope, $scrapsdb, $antodoconsts) {
 	let tag = (strings, ...values) => [0, 1, 2].reduce((p, c, i, a) => p + strings[c] + values[c] + "\n", '');
 	$scope.pie = () => {
 		const selector = 'charts';
@@ -152,5 +155,6 @@ angular.module('Antodo').controller("ChartController", function ($scope, $scraps
 		$scope.message = $scope.count < 1 ? "No data to show charts" : tag`complete = ${$scope.complete} progress = ${$scope.progress} total = ${$scope.count}`;
 		if ($scope.count > 0) D3Pie('#' + selector, $scope.complete, $scope.progress);
 	};
+	$scope.$on($antodoconsts.ScrapStorageKey + $antodoconsts.ScrapCountKey, () => $scope.pie());
 	$scope.pie();
 });
