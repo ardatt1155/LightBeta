@@ -4,6 +4,7 @@
  */
 
 import java.io.PrintStream;
+import java.util.List;
 
 public class Square
 {
@@ -19,6 +20,14 @@ public class Square
     public boolean equals(Square s)
     {
         return (this.x == s.x && this.y == s.y);
+    }
+
+    public boolean find(List<Square> squares)
+    {
+        for (Square square: squares) {
+            if (this.equals(square)) return true;
+        }
+        return false;
     }
 
     public boolean bounds(int dimension)
