@@ -3,13 +3,11 @@
  * Created by ardatt1155
  */
 
-import java.util.function.Consumer;
+import java.util.List;
 
-public class AbstractArena
+public abstract class AbstractArena implements ArenaInterface
 {
-    public static Consumer<int[]> spc = new Consumer<int[]>() {
-        public void accept(int[] square) {
-            System.out.print(" (" + square[0] + "," + square[1] + ") ");
-        }
-    };
+    protected List<Square> trapList;
+
+    protected List<Square> clayList;
 }

@@ -5,6 +5,7 @@
 
 import org.junit.Test;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class KingRoleTest
 {
@@ -12,10 +13,14 @@ public class KingRoleTest
     public void moves()
     {
         RoleInterface king = new KingRole();
-        List<int[]> moves = null;
+        List<Square> moves = null;
 
-        moves = king.nextSquares(1, 1, 3);
-        moves.forEach(AbstractArena.spc); System.out.println();
+        moves = king.nextSquares(new Square(1, 1), 3);
+        moves.forEach(new Consumer<Square>() {
+            public void accept(Square square) {
+                square.print(System.out);
+            }
+        }); System.out.println();
         org.junit.Assert.assertTrue(moves.size() == 8);
     }
 }

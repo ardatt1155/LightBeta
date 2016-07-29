@@ -8,7 +8,7 @@ public interface ArenaInterface
 {
     public int dimension();
 
-    public List<int[]> traps();
+    public List<Square> traps();
 
-    public List<int[]> clay();
+    public List<Square> clays();
 }

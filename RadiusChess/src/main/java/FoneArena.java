@@ -1,37 +1,34 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by ardatt1155
  */
 
-public class FoneArena implements ArenaInterface
-{
-    private List<int[]> _traps;
-    private List<int[]> _clay;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+public class FoneArena extends AbstractArena
+{
     public int dimension()
     {
         return 3;
     }
 
-    public List<int[]> traps()
+    public List<Square> traps()
     {
-        if (this._traps == null) {
-            this._traps = new ArrayList<int[]>();
-            this._traps.add(new int[]{0, 0});
-            this._traps.add(new int[]{0, 2});
+        if (this.trapList == null) {
+            this.trapList = new ArrayList<Square>();
+            this.trapList.add(new Square(0, 0));
+            this.trapList.add(new Square(0, 2));
         }
-        return Collections.unmodifiableList(this._traps);
+        return Collections.unmodifiableList(this.trapList);
     }
 
-    public List<int[]> clay()
+    public List<Square> clays()
     {
-        if (this._clay == null) {
-            this._clay = new ArrayList<int[]>();
-            this._clay.add(new int[]{0, 1});
+        if (this.clayList == null) {
+            this.clayList = new ArrayList<Square>();
+            this.clayList.add(new Square(0, 1));
         }
-        return Collections.unmodifiableList(this._clay);
+        return Collections.unmodifiableList(this.clayList);
     }
 }

@@ -4,17 +4,17 @@
 
 public abstract class AbstractRole implements RoleInterface
 {
-    protected String _name;
+    protected String name;
 
-    protected Roles _role;
+    protected Roles role;
 
     public String getRoleName()
     {
-        return this._name;
+        return this.name;
     }
 
     public Roles getRoleCode()
     {
-        return this._role;
+        return this.role;
     }
 }
