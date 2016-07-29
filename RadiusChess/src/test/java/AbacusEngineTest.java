@@ -32,5 +32,10 @@ public class AbacusEngineTest
         moves = spy.compute(Roles.Knight);
         System.out.println("Role = Knight, Jumps = " + spy.jumps() + ", Moves = " + moves);
         org.junit.Assert.assertTrue(moves == 16);
+
+        Mockito.when(spy.jumps()).thenReturn(7);
+        moves = spy.compute(Roles.Pawn);
+        System.out.println("Role = Pawn, Jumps = " + spy.jumps() + ", Moves = " + moves);
+        org.junit.Assert.assertTrue(moves == 0);
     }
 }

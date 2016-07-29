@@ -15,7 +15,7 @@ public final class Roles
 
     public static boolean isRoleOk(int role)
     {
-        return (role < Roles.Pawn && role > -1);
+        return (role <= Roles.Pawn && role >= Roles.King);
     }
 }
 

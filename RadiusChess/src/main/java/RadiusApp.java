@@ -13,8 +13,7 @@ public class RadiusApp
     {
         System.out.println("Launching RadiusChess ... ");
         System.out.println("RadiusChess is ready. Let's play. Enter q to quit");
-        System.out.println("Enter your character : 1 King. 2 Queen. 3 Rook. 4 Knight. 5 Bishop. 6 Pawn." +
-                " (Pawns aren't playful)");
+        System.out.println("Enter your character : 1 King. 2 Queen. 3 Rook. 4 Knight. 5 Bishop. 6 Pawn.");
 
         int iterations = 50;
         try {

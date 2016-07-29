@@ -14,12 +14,7 @@ public class RoleFactoryTest
         role = RoleFactory.spawn(Roles.King);
         org.junit.Assert.assertTrue(role instanceof KingRole);
 
-        boolean flag = false;
-        try {
-            role = RoleFactory.spawn(Roles.Pawn);
-        } catch (IllegalArgumentException e) {
-            flag = true;
-        } catch (Exception e) { }
-        org.junit.Assert.assertTrue(flag);
+        role = RoleFactory.spawn(Roles.Pawn);
+        org.junit.Assert.assertTrue(role instanceof PawnRole);
     }
 }

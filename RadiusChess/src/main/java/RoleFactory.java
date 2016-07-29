@@ -28,6 +28,8 @@ public final class RoleFactory
                 puppet = new BishopRole();
                 break;
             case Roles.Pawn:
+                puppet = new PawnRole();
+                break;
             default:
                 throw new IllegalArgumentException("Radiuschess: role not supported.");
         }
