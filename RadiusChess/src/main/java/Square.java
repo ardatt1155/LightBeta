@@ -30,9 +30,9 @@ public class Square
         return false;
     }
 
-    public boolean bounds(int dimension)
+    public boolean bounds(Square dimension)
     {
-        return (this.x > -1 && this.x < dimension && this.y > -1 && this.y < dimension);
+        return (this.x > -1 && this.x < dimension.x && this.y > -1 && this.y < dimension.y);
     }
 
     public void print(PrintStream os) {

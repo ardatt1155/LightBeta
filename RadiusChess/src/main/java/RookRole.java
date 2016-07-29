@@ -12,14 +12,15 @@ public class RookRole extends AbstractRole
         this.role = Roles.Rook;
     }
 
-    public List<Square> nextSquares(Square square, int dimension)
+    public List<Square> nextSquares(Square square, Square dimension)
     {
         List<Square> squares = new ArrayList<Square>();
-        for (int i = -dimension; i < dimension; ++i)
+        int dims = Math.max(dimension.x, dimension.y);
+        for (int i = -dims; i < dims; ++i)
         {
             if (i == 0) continue;
-            if (square.x + i < dimension && square.x + i > -1) squares.add(new Square(square.x + i, square.y));
-            if (square.y + i < dimension && square.y + i > -1) squares.add(new Square(square.x, square.y + i));
+            if (square.x + i < dimension.x && square.x + i > -1) squares.add(new Square(square.x + i, square.y));
+            if (square.y + i < dimension.y && square.y + i > -1) squares.add(new Square(square.x, square.y + i));
         }
         return squares;
     }

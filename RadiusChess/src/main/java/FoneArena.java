@@ -8,7 +8,12 @@ import java.util.List;
 
 public class FoneArena extends AbstractArena
 {
-    public int dimension()
+    public int dimensionX()
+    {
+        return 4;
+    }
+
+    public int dimensionY()
     {
         return 3;
     }
@@ -28,6 +33,7 @@ public class FoneArena extends AbstractArena
         if (this.clayList == null) {
             this.clayList = new ArrayList<Square>();
             this.clayList.add(new Square(0, 1));
+            this.clayList.add(new Square(3, 0));
         }
         return Collections.unmodifiableList(this.clayList);
     }

@@ -15,7 +15,7 @@ public class KingRoleTest
         RoleInterface role = new KingRole();
         List<Square> moves = null;
 
-        moves = role.nextSquares(new Square(1, 1), 3);
+        moves = role.nextSquares(new Square(1, 1), new Square(4, 3));
         moves.forEach(new Consumer<Square>() {
             public void accept(Square square) {
                 square.print(System.out);

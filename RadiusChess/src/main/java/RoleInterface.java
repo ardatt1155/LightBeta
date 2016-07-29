@@ -6,7 +6,7 @@ import java.util.List;
 
 interface RoleInterface
 {
-    public List<Square> nextSquares(Square square, int dimension);
+    public List<Square> nextSquares(Square square, Square dimension);
 
     public int getRoleCode();
 

@@ -15,7 +15,7 @@ public class FoneArenaTest
 
         Consumer<Square> bounds = new Consumer<Square>() {
             public void accept(Square square) {
-                org.junit.Assert.assertTrue(square.bounds(arena.dimension()));
+                org.junit.Assert.assertTrue(square.bounds(new Square(arena.dimensionX(), arena.dimensionY())));
             }
         };
 

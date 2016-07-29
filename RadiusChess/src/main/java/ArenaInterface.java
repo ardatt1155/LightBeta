@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface ArenaInterface
 {
-    public int dimension();
+    public int dimensionX();
+
+    public int dimensionY();
 
     public List<Square> traps();
 

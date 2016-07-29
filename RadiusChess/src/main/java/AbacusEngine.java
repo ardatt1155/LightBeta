@@ -17,10 +17,11 @@ public class AbacusEngine implements AbacusInterface
         RoleInterface role = RoleFactory.spawn(code);
         ArenaInterface arena = new FoneArena();
 
-        long[][] board = new long[arena.dimension()][arena.dimension()];
-        long[][] table = new long[arena.dimension()][arena.dimension()];
-        for (int x = 0; x < arena.dimension(); ++x)
-            for (int y = 0; y < arena.dimension(); ++y)
+        long[][] board = new long[arena.dimensionX()][arena.dimensionY()];
+        long[][] table = new long[arena.dimensionX()][arena.dimensionY()];
+        Square dimension = new Square(arena.dimensionX(), arena.dimensionY());
+        for (int x = 0; x < arena.dimensionX(); ++x)
+            for (int y = 0; y < arena.dimensionY(); ++y)
             {
                 Square square = new Square(x, y);
                 if (square.find(arena.clays())) board[x][y] = 0;
@@ -30,19 +31,19 @@ public class AbacusEngine implements AbacusInterface
 
         for (int jump = 1; jump < this.jumps(); jump++)
         {
-            for (int x = 0; x < arena.dimension(); ++x)
-                for (int y = 0; y < arena.dimension(); ++y)
+            for (int x = 0; x < arena.dimensionX(); ++x)
+                for (int y = 0; y < arena.dimensionY(); ++y)
                 {
                     Square square = new Square(x, y);
                     table[x][y] = square.find(arena.traps()) ? -1 : 0;
                 }
 
-            for (int x = 0; x < arena.dimension(); ++x)
-                for (int y = 0; y < arena.dimension(); ++y)
+            for (int x = 0; x < arena.dimensionX(); ++x)
+                for (int y = 0; y < arena.dimensionY(); ++y)
                 {
                     if (board[x][y] == -1) continue;
                     Square square = new Square(x, y);
-                    List<Square> reachables = role.nextSquares(square, arena.dimension());
+                    List<Square> reachables = role.nextSquares(square, dimension);
                     for (Square reachable : reachables)
                     {
                         if (reachable.find(arena.traps())) continue;
@@ -54,8 +55,8 @@ public class AbacusEngine implements AbacusInterface
         }
 
         long result = 0;
-        for (int x = 0; x < arena.dimension(); ++x)
-            for (int y = 0; y < arena.dimension(); ++y)
+        for (int x = 0; x < arena.dimensionX(); ++x)
+            for (int y = 0; y < arena.dimensionY(); ++y)
                 result = result + Math.max(board[x][y], 0);
 
         return result;

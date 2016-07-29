@@ -16,16 +16,16 @@ public class AbacusEngineTest
         Mockito.when(spy.jumps()).thenReturn(1);
         moves = spy.compute(Roles.King);
         System.out.println("Role = King, Jumps = " + spy.jumps() + ", Moves = " + moves);
-        org.junit.Assert.assertTrue(moves == 6);
+        org.junit.Assert.assertTrue(moves == 8);
 
         Mockito.when(spy.jumps()).thenReturn(2);
         moves = spy.compute(Roles.King);
         System.out.println("Role = King, Jumps = " + spy.jumps() + ", Moves = " + moves);
-        org.junit.Assert.assertTrue(moves == 25);
+        org.junit.Assert.assertTrue(moves == 40);
 
         Mockito.when(spy.jumps()).thenReturn(7);
         moves = spy.compute(Roles.King);
         System.out.println("Role = King, Jumps = " + spy.jumps() + ", Moves = " + moves);
-        org.junit.Assert.assertTrue(moves == 32964); //verify?
+        org.junit.Assert.assertTrue(moves == 124908); //verify?
     }
 }
