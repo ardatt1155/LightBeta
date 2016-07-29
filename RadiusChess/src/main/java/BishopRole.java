@@ -9,7 +9,6 @@ public class BishopRole extends AbstractRole
 {
     public BishopRole()
     {
-        this.name = "Bishop";
         this.role = Roles.Bishop;
     }
 

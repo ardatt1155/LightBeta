@@ -7,7 +7,7 @@ interface AbacusInterface
 {
     public int jumps();
 
-    public long compute(Roles role);
+    public long compute(int role);
 }
 
 

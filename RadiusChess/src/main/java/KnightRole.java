@@ -9,7 +9,6 @@ public class KnightRole extends AbstractRole
 {
     public KnightRole()
     {
-        this.name = "Knight";
         this.role = Roles.Knight;
     }
 

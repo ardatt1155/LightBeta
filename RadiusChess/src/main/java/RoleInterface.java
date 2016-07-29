@@ -8,7 +8,7 @@ interface RoleInterface
 {
     public List<Square> nextSquares(Square square, int dimension);
 
-    public Roles getRoleCode();
+    public int getRoleCode();
 
     public String getRoleName();
 }

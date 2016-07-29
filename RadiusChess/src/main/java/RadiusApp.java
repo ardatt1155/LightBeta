@@ -16,28 +16,24 @@ public class RadiusApp
         System.out.println("RadiusChess is ready. Let's play. Enter q to quit");
         System.out.println("Enter your character : 1 King. 2 Queen. 3 Rook. 4 Knight. 5 Bishop. 6 Pawn");
 
-        int iterations = 5;
+        int iterations = 50;
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            AbacusInterface abacus = new AbacusEngine();
             while (iterations-- > 0) {
                 String value = br.readLine().trim();
-                int character = 1; //default King
+                int role = 1; //default King
                 if ("q".equalsIgnoreCase(value)) break;
                 try {
-                    character = Integer.parseInt(value);
+                    role = Integer.parseInt(value) - 1;
+                    if (!Roles.isRoleOk(role)) throw new NumberFormatException("");
                 } catch (NumberFormatException e) {
                     System.out.println("Your selection " + value + " was invalid. Try again");
                     continue;
                 }
-                String name = null;
-                int moves = 0;
-                switch (character) {
-                    default:
-                        name = "King";
-                        moves = 42;
-                }
-                System.out.println(name + " gives you " + moves + " moves.");
+                long moves = abacus.compute(role);
+                System.out.println(Roles.names[role] + " gives you " + moves + " moves.");
 
             }
         } catch (IOException e) {

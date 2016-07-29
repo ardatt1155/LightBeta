@@ -10,7 +10,6 @@ public class KingRole extends AbstractRole
 {
     KingRole()
     {
-        this.name = "King";
         this.role = Roles.King;
     }
 

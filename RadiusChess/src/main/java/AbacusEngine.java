@@ -12,7 +12,7 @@ public class AbacusEngine implements AbacusInterface
         return 7;
     }
 
-    public long compute(Roles code)
+    public long compute(int code)
     {
         RoleInterface role = RoleFactory.spawn(code);
         ArenaInterface arena = new FoneArena();

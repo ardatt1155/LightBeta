@@ -10,7 +10,7 @@ public class RadiusAppTest
 {
     @Test
     public void testMain() {
-        String data = "1\n 2\n q\n";
+        String data = "1\n 2\n m\n 9\n -2\n 6\n 5\n 4\n 3\n q\n";
         InputStream stdin = System.in;
         PrintStream stdout = System.out;
 
@@ -24,7 +24,9 @@ public class RadiusAppTest
         System.setOut(stdout);
 
         String output = baos.toString();
-        //System.out.println(output);
+        System.out.println("Radiusapp test run commences ... ");
+        System.out.println(output);
+        System.out.println(".... test run finished");
         org.junit.Assert.assertTrue(output.startsWith("Launching RadiusChess ..."));
     }
 }
