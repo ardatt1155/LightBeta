@@ -3,7 +3,6 @@
  * Created by ardatt1155
  */
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import java.io.*;
 
