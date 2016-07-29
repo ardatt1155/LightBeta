@@ -18,5 +18,9 @@ public class KnightRoleTest
 
         moves = role.nextSquares(new Square(0, 1), new Square(4, 3));
         org.junit.Assert.assertTrue(moves.size() == 2);
+
+        moves = role.nextSquares(new Square(0, 0), new Square(4, 3));
+        System.out.println(moves.size());
+        org.junit.Assert.assertTrue(moves.size() == 2);
     }
 }
