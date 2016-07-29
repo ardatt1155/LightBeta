@@ -18,18 +18,14 @@ The code is architected in an OOP paradigm. We have the following characters in 
 
 (e) Abacus. Abacus is the solver and the engine. Abacus is the engine that knows how to use the roles, arenas and squares. Abacus is also the solver that encapsulates the strategy of computation. Abacus conforms to an AbacusInterface, and AbacusEngine is our concrete implementation that uses dynamic-programming to solve the puzzle. Abacus delegates the task of instantiating Arenas and Roles to the corresponding factories.
 
-(f) Here is a list of design-patterns that may be observed in the project. abstract-class, interface, inheritance, encapsulation, delegation, dependency-injection, factory, strategy, mock, streams, pipes, exceptions.
+(f) Here is a list of design-patterns that may be observed in the project. abstract-class, interface, inheritance, encapsulation, delegation, dependency-injection, factory, strategy, mock, streams, pipes, exceptions, immutability.
 
-#### Scope-Of-Improvements (79787c1b63230387dd6132cb12145cb981c15ed6, Radiuschess IX)
+#### Scope-Of-Improvements
 (a) OOP design has been done in a way that we can easily extend the game to arbitrary-dimensions of boards, lists of squares/trays, or even fictious roles. However the 2D nature of the board is tightly coupled with the types. Hence if you wish to generalize the game to a 3D arena, major refactoring may be required.
 
-(b) The Square.bounds method may be leveraged by the Role implementations. This will simplify the logic contained in Roles a lot, and reduce duplicated logic.
+(b) Roles may be enforced to be singletons. Computed results may be stored or cached, currently Abacus recomputes the solution on every query which is suboptimal.
 
-(c) Roles may be enforced to be singletons.
-
-(d) Arena may provide a way to store computed results. Currently Abacus recomputes the solution on every query, this is suboptimal.
-
-(e) Then there is always more testcases to add.
+(b) Then there is always more testcases to add.
 
 
 
