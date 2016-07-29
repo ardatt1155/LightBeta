@@ -3,7 +3,6 @@
  * Created by ardatt1155
  */
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -14,10 +13,10 @@ public class RadiusApp
     {
         System.out.println("Launching RadiusChess ... ");
         System.out.println("RadiusChess is ready. Let's play. Enter q to quit");
-        System.out.println("Enter your character : 1 King. 2 Queen. 3 Rook. 4 Knight. 5 Bishop. 6 Pawn");
+        System.out.println("Enter your character : 1 King. 2 Queen. 3 Rook. 4 Knight. 5 Bishop. 6 Pawn." +
+                " (Pawns aren't playful)");
 
         int iterations = 50;
-
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             AbacusInterface abacus = new AbacusEngine();
@@ -37,7 +36,7 @@ public class RadiusApp
 
             }
         } catch (IOException e) {
-            System.out.println("Radiuschess errored out. Sorry.");
+            System.out.println("Radiuschess errored out because of platform failures. Sorry.");
         }
         if (iterations == 0) System.out.println("That is enough play for today. :P");
         System.out.println("RadiusChess shut down");
