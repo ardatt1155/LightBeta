@@ -7,35 +7,48 @@ import org.mockito.Mockito;
 
 public class AbacusEngineTest
 {
+    private long agent(int role, int jumps)
+    {
+        long moves = -1;
+        AbacusInterface spy = Mockito.spy(new AbacusEngine());
+        Mockito.when(spy.jumps()).thenReturn(jumps);
+        moves = spy.compute(role);
+        System.out.println("Role = " + Roles.names[role] + ", Jumps = " + spy.jumps() + ", Moves = " + moves);
+        return moves;
+    }
+
     @Test
     public void compute()
     {
         long moves = -1;
-        AbacusInterface spy = Mockito.spy(new AbacusEngine());
+        int role = Roles.King;
 
-        Mockito.when(spy.jumps()).thenReturn(1);
-        moves = spy.compute(Roles.King);
-        System.out.println("Role = King, Jumps = " + spy.jumps() + ", Moves = " + moves);
+        moves = this.agent(Roles.King, 1);
         org.junit.Assert.assertTrue(moves == 8);
 
-        Mockito.when(spy.jumps()).thenReturn(2);
-        moves = spy.compute(Roles.King);
-        System.out.println("Role = King, Jumps = " + spy.jumps() + ", Moves = " + moves);
+        moves = this.agent(Roles.King, 2);
         org.junit.Assert.assertTrue(moves == 40);
 
-        Mockito.when(spy.jumps()).thenReturn(7);
-        moves = spy.compute(Roles.King);
-        System.out.println("Role = King, Jumps = " + spy.jumps() + ", Moves = " + moves);
-        org.junit.Assert.assertTrue(moves == 124908); //verify?
+        moves = this.agent(Roles.Queen, 2);
+        org.junit.Assert.assertTrue(moves == 55);
 
-        Mockito.when(spy.jumps()).thenReturn(2);
-        moves = spy.compute(Roles.Knight);
-        System.out.println("Role = Knight, Jumps = " + spy.jumps() + ", Moves = " + moves);
+        moves = this.agent(Roles.Rook, 2);
+        org.junit.Assert.assertTrue(moves == 35);
+
+        moves = this.agent(Roles.Bishop, 2);
+        org.junit.Assert.assertTrue(moves == 20);
+
+        moves = this.agent(Roles.Knight, 2);
         org.junit.Assert.assertTrue(moves == 16);
 
-        Mockito.when(spy.jumps()).thenReturn(7);
-        moves = spy.compute(Roles.Pawn);
-        System.out.println("Role = Pawn, Jumps = " + spy.jumps() + ", Moves = " + moves);
+        moves = this.agent(Roles.Knight, 3);
+        org.junit.Assert.assertTrue(moves == 35);
+
+        moves = this.agent(Roles.Pawn, 7);
         org.junit.Assert.assertTrue(moves == 0);
+
+        moves = this.agent(Roles.King, 7);
+        org.junit.Assert.assertTrue(moves == 124908); //unvalidated
+
     }
 }

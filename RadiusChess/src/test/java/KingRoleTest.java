@@ -16,7 +16,7 @@ public class KingRoleTest
         List<Square> moves = null;
 
         moves = role.nextSquares(new Square(1, 1), new Square(4, 3));
-        moves.forEach(new Consumer<Square>() {
+        System.out.print("Moves for King(1,1) on Arena(4,3) = "); moves.forEach(new Consumer<Square>() {
             public void accept(Square square) {
                 square.print(System.out);
             }

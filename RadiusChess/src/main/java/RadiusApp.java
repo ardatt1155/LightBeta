@@ -12,7 +12,8 @@ public class RadiusApp
     public static void play()
     {
         System.out.println("Launching RadiusChess ... ");
-        System.out.println("RadiusChess is ready. Let's play. Enter q to quit");
+        System.out.println("RadiusChess is ready. Let's play. Maximum iterations = 50. Enter q to quit.");
+        System.out.println("Arena is 4x3 with traps at top-left and mid-bottom, clays at bottom-left and bottom-right. Jumps = 7.");
         System.out.println("Enter your character : 1 King. 2 Queen. 3 Rook. 4 Knight. 5 Bishop. 6 Pawn.");
 
         int iterations = 50;
@@ -38,7 +39,7 @@ public class RadiusApp
             System.out.println("Radiuschess errored out because of platform failures. Sorry.");
         }
         if (iterations == 0) System.out.println("That is enough play for today. :P");
-        System.out.println("RadiusChess shut down");
+        System.out.println("... RadiusChess shut down.");
         return;
     }
 

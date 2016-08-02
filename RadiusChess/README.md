@@ -5,7 +5,11 @@
 Refer to RadiusChallenge.pdf for description of the problem.
 This is a Java + Maven project built in IntelliJ. Test framework used is JUnit + Hamcrest + Mockito. Git history will show a TDD style of coding.
 
-#### Structure
+#### Manual
+Download the jar file at RadiusChess/jar/RadiusChess.jar
+Run with 'java -jar RadiusChess.jar'.
+
+#### Description
 The code is architected in an OOP paradigm. We have the following characters in the project.
 
 (a) RadiusApp. This is the application driver which contains the static main function.
@@ -20,13 +24,9 @@ The code is architected in an OOP paradigm. We have the following characters in 
 
 (f) Here is a list of design-patterns that may be observed in the project. abstract-class, interface, inheritance, encapsulation, delegation, dependency-injection, factory, strategy, mock, streams, pipes, exceptions, immutability.
 
-#### Scope-Of-Improvements
+#### Remarks
 (a) OOP design has been done in a way that we can easily extend the game to arbitrary-dimensions of boards, lists of squares/trays, or even fictious roles. However the 2D nature of the board is tightly coupled with the types. Hence if you wish to generalize the game to a 3D arena, major refactoring may be required.
 
 (b) Roles may be enforced to be singletons. Computed results may be stored or cached, currently Abacus recomputes the solution on every query which is suboptimal.
-
-(b) Then there is always more testcases to add.
-
-
 
 -- eof --

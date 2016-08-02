@@ -25,7 +25,7 @@ public class RadiusAppTest
 
         String output = baos.toString();
         System.out.println("Radiusapp test run commences ... ");
-        System.out.println(output);
+        System.out.print(output);
         System.out.println(".... test run finished");
         org.junit.Assert.assertTrue(output.startsWith("Launching RadiusChess ..."));
     }
