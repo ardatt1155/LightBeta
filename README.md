@@ -25,17 +25,19 @@ Select the top users based on highest transaction amount for year 2015. We wish 
 The application is just a solution.scala script file that can be executed in the Spark REPL via solution.sh
 Here are the steps of mining.
 
-(a) DnD is parsed and converted to an RDD that contains only tuple whose sole value is the sorted list of all telephones.
+(a) DnD is parsed and converted to an RDD that contains only tuple whose sole value is the sorted list of all telephones. Tuples are first trimmed and assumed valid if there are exactly ten digits after removing the characters ()-\b. 
 
-(b) Transactions is parsed, filtered to include tuples that contain at least three values and the third value contains the subtring '2015-'.
+(b) Transactions is transformed to an RDD that contains only tuples with their dates in 2015. Tuples are tested for sanity - check if the second-value is prefixed with a dollar symbol and subsequently contains a valid float value, check if the third value can be parsed into a valid date object. 
 
-(c) Users is parsed. We filter the data with a series of sanity tests, and transform to an RDD.
+(c) Users is transformed to an RDD. Tuples are sanitized - check if uid contains non-blank characters, check if tuples contain at least four values, filter the fourth value for valid telephones. 
 
-(d) Reachables is computed as a cartesian product of Users and DnD. This RDD contains all users who are available by at least one telephone.
+(d) Reachables is computed as a cartesian product of Users and DnD, and then tuples are filtered so the final RDD contains only users who are available by at least one telephone.
 
 (e) Result is computed as a cartesian of Reachables and Transactions. This RDD then goes through transformations that include sorting-by-transaction-value and formatting-the-output.
 
 (f) Result is saved as a textfile. Unix shell commands are used to pick the first 1000 tuples and write out the final campaign.txt
 
-(g) Time-complexity is O(Dlog D + T + Ulog D + Ulog T + Ulog U). Notice that the design avoids quadratic-terms in time-complexity.
+(g) Time-complexity is O(Dlog D + Tlog T + Ulog D + Ulog T + Ulog U). The algorithm avoids quadratic-terms in time-complexity. This assumes the Spark API _.cartesian smartly sorts the larger RDD, else add O(UT).
+
+(h) donotcall.txt and transactions.txt looks like very clean data. users.txt seems to contain a lot of malformed data. Of 25000 tuples, only about 16670 tuples passed the sanitizations. The job takes about 45 seconds on a Macbook.
 
