@@ -25,19 +25,21 @@ Select the top users based on highest transaction amount for year 2015. We wish 
 The application is just a solution.scala script file that can be executed in the Spark REPL via solution.sh
 Here are the steps of mining.
 
-(a) DnD is parsed and converted to an RDD that contains only tuple whose sole value is the sorted list of all telephones. Tuples are first trimmed and assumed valid if there are exactly ten digits after removing the characters ()-\b. 
+(a) DnD is parsed and converted to an RDD that contains only tuple whose sole value is the sorted list of all telephones. Tuples are first trimmed and assumed valid if there are exactly ten digits after removing the characters ()-\b. This RDD is then collected into a sorted set, called Blocked.
 
 (b) Transactions is transformed to an RDD that contains only tuples with their dates in 2015. Tuples are tested for sanity - check if the second-value is prefixed with a dollar symbol and subsequently contains a valid float value, check if the third value can be parsed into a valid date object. 
 
 (c) Users is transformed to an RDD. Tuples are sanitized - check if uid contains non-blank characters, check if tuples contain at least four values, filter the fourth value for valid telephones. 
 
-(d) Reachables is computed as a cartesian product of Users and DnD, and then tuples are filtered so the final RDD contains only users who are available by at least one telephone.
+(d) Reachables is computed from Users and Blocked, and then tuples are filtered so the final RDD contains only users who are available by at least one telephone.
 
-(e) Result is computed as a cartesian of Reachables and Transactions. This RDD then goes through transformations that include sorting-by-transaction-value and formatting-the-output.
+(e) Result is computed as a join of Reachables and Transactions. This RDD then goes through transformations that include sorting-by-transaction-value and formatting-the-output.
 
 (f) Result is saved as a textfile. Unix shell commands are used to pick the first 1000 tuples and write out the final campaign.txt
 
-(g) Time-complexity is O(Dlog D + Tlog T + Ulog D + Ulog T + Ulog U). The algorithm avoids quadratic-terms in time-complexity. This assumes the Spark API _.cartesian smartly sorts the larger RDD, else add O(UT).
+(g) Time-complexity is O(Dlog D + Tlog T + Ulog D + Ulog T + Ulog U). The algorithm avoids quadratic-terms in time-complexity. This assumes the Spark API _.cartesian smartly sorts the larger RDD, else add O(UT). Space-complexity is O(D + T + U), so additional space-complexity is O(1).
 
-(h) donotcall.txt and transactions.txt looks like very clean data. users.txt seems to contain a lot of malformed data. Of 25000 tuples, only about 16670 tuples passed the sanitizations. The job takes about 45 seconds on a Macbook.
+(h) donotcall.txt and transactions.txt looks like very clean data. users.txt seems to contain a lot of malformed data. Of 25000 tuples, only about 16680 tuples passed the sanitizations. Going forward 14990 users were discovered to be reachable. The job takes about 5 seconds in a Macbook on the given data.
+
+(i) Sanitization of users.txt may have scopes of improvement. There are a few telephones which get filtered out now but would have been included if we could refine the data more. An example is (1209403925;Raia Rivi&egrave;re;raia.rivi&egrave;re @gmail.com;(003) 094-4470) - some of the semi-colons are part of the HTML encoding of foreign characters but are confused as delimiters. Another example is (181626375;Homer Nicoll;;homer.nicoll;@yahoo.com,homer.nicoll;@gmail.com;(137) 128-7229) - this has stray semicolons in the email-address. Such rigorous data refinement must be weighed with business-value vs engineering-cost and is a normal part of bigdata analytics.
 

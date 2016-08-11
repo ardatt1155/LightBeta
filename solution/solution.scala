@@ -5,11 +5,10 @@ import scala.util.{Try, Success, Failure}
 val begin = System.currentTimeMillis
 
 val dnd = sc.textFile("./data/donotcall.txt").
-	filter(x => x.trim().filter(c => c.isDigit).length == 10).
-	map(x => (x.trim(), "DND")).
-	map(x => (x._2, x._1)).
-	groupByKey().
-	map(x => collection.SortedSet(x._2.toList : _*))
+	filter(x => x.filter(c => c.isDigit).length == 10).
+	map(x => x.filter(c => c.isDigit))
+
+val blocked = collection.SortedSet(dnd.collect() : _*)
 
 val transactions = sc.textFile("./data/transactions.txt").
 	map(x => x.split(";")).
@@ -19,12 +18,12 @@ val transactions = sc.textFile("./data/transactions.txt").
 	aggregateByKey(0)((r: Int, n: String) => r + (n.toFloat * 100).toInt, (r1: Int, r2: Int) => r1 + r2)
 
 val users = sc.textFile("./data/users.txt").
-	map(x => x.split(";")).
+	map(x => x.trim().split(";")).
 	filter(x => x.length > 3 && x(0).trim().length() > 0).
 	map(x => (x(0), x(1), x(2), x(3).split(",").filter(x => x.forall(c => c.isDigit || c == '(' || c == ')' || c == '-' || c == ' ') && x.filter(c => c.isDigit).length == 10).map(x => x.filter(c => c.isDigit))))
 
-val reachables = users.cartesian(dnd).
-	map(x => (x._1._1, (x._1._2, x._1._3, x._1._4.filter(t => !x._2.contains(t))))).
+val reachables = users.
+	map(x => (x._1, (x._2, x._3, x._4.filter(t => !blocked.contains(t))))).
 	filter(x => x._2._3.length > 0)
 
 val result = reachables.join(transactions).
