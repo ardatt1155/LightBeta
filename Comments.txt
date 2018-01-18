@@ -1,74 +1,73 @@
-
 TICTACTOE
 
 
-1. Where is TDD, or testcases? This is outrageous. #tdd
+1. Where is TDD, or testcases? #tdd
 
-2. Where are the functional-tests, where are the performance tests. #functional_testing #perf_compliant
+2. Where are the functional-tests, where are the performance tests. #functional_test #perf_test
 
 3. All components are in the same file. This is not good code-organization. Classes/Interfaces should be split into their own files in the least. We may also want to split various components in their own package, so we can generate independent jar files. #modules
 
-4. SimpleMoveStrategy is suffixed with strategy, but HumanMove is not suffixed. I am undecided how to feel about that, maybe a minor comment. #naming_convention
+4. SimpleMoveStrategy is suffixed with strategy, but HumanMove is not suffixed. #style
 
-5. Usage of 'this' is not explicit. This is again a matetr of style which I know is not the focus here, however I like to make things explicit. #explicit
+5. Usage of 'this' is not explicit. Tis a simple matter of style #style
 
-6. The chain of inheritance beginning at MoveMethod is missing an abstract class. SimpleMoveStrategy and HumanMove share common-logic that could be refactored into an common abstract class. This inlcudes the constructor-logic and some common member-variables. The private member-variable would need to be declared as protected when moved to the abstract class. #abstract_base_class
+6. The chain of inheritance beginning at MoveMethod is missing an abstract class. SimpleMoveStrategy and HumanMove share common-logic that could be refactored into a common abstract class. This inlcudes the constructor-logic and some common member-variables. The private member-variable would need to be declared as protected when moved to the abstract class. #abstract_base_class
 
 7. SimpleMoveStrategy and HumanMove both commit to a concrete implementation of TicTacToe. They should instead be programmed to an interface. Protocols and contracts are best defined via interfaces, abstract-classes can implement an interface partially. Hence we know when to best use an interface and when to use an abstract-class. #interfaces
 
-8. SimpleMoveStrategy and HumanMove are both directly accessing member-variables of TicTacToe, one of which does not seem to have write-protection. TicTacToe.N is declared final, which collaterally provides write-protection. SimpleMoveStrategy and HumanMove also requires to know the logic of the actual data-structure holding board-data, which should be strictly internal to TicTacToe. A good design would be for TicTacToe to provide public getters. C# has a beautiful syntax for declaring a property with a private-backing-variable and getters/setters with different encapsulation levels, I am not sure what is the most elegant way of doing this in Java. #decouple #encapsulation #reusable #synatx_sugar
+8. SimpleMoveStrategy and HumanMove are both directly accessing member-variables of TicTacToe, one of which does not seem to have write-protection. TicTacToe.N is declared final, which collaterally provides write-protection. SimpleMoveStrategy and HumanMove also requires to know the logic of the actual data-structure holding board-data, which should be strictly internal to TicTacToe. A good design would be for TicTacToe to provide public getters. C# has a beautiful syntax for declaring a property with a private-backing-variable and getters/setters with different encapsulation levels, I am not sure what is the most elegant way of doing this in Java. #decouple #encapsulation #reusable #style
 
 9. Line-25 and Line-27 of SimpleMoveStrategy reads TicTacToe.N but line-30 assumes it to be 3. #no_hardcode
 
 10. Sanity checks in line-51 is insufficient. Input like '3g' or '' will cause an exception. Defects include assuming a minimum-length of 0, and assuming that input has no non-numeric character beyond the first char. #sanitization
 
-11. With or without exhaustive sanity checks, there should be try/catch around parseInt since this throws an recoverable exception. #exceptions  #fault_tolerance
+11. With or without exhaustive sanity checks, there should be try/catch around parseInt since this throws an recoverable exception. #exceptions
 
 12. Declarations of move_str could have been inside the while-block. This is minor and is often a matter of taste, and hopefully the compiler optimizes such small details for performance. #readability
 
-13. TicTacToe is doing too much. This can be broken down into several classes. We will see as we go along. TicTacToe should just be the guy who understands knows how to orchestrate all the components to build a game. TicTacToe should just be the driver class that is the glue to hold the application-logic. #single_responsibility #driver
+13. TicTacToe class is doing too much. This can be broken down into several classes. TicTacToe should just be the guy who understands how to orchestrate all the components to build a game. TicTacToe should just be the driver class that is the glue to hold the application-logic. #single_responsibility #driver
 
-14. Did we do an UML diagram and share it with the team before commencing implementation. The UML file should be the first file that goes into source-code. #architecture #uml
+14. We should do an UML diagram before commencing implementation. The UML file should be the first file that goes into source-code. #architecture
 
-15. Value of N is hard-coded. Why not make it driven by a configuration. What if we want to generalize the game to 4x4 boards. A mechanism of providing N dynamically is missing. This is just the tip of the iceberg of the power of configuration, we will see more examples as we go along. #configurations
+15. Value of N is hard-coded. Make it a configuration. What if we want to generalize the game to 4x4 boards. A mechanism of providing N dynamically is missing. This is just the tip of the iceberg of the power of configuration, we will see more examples as we go along. #architecture
 
 16. Board data should be refactored to it's own class, which should encapsulate the actual data-structure used (2D-array/hashmap/whatever) and just provide getters/setters. Board class should also be accompanied by an IBoard interface, and include N/getPosDescription. #extensible #reusable
 
-17. TicTacToe.reader could throw an exception during class-loading. I am not sure if this is best design. On the one hand we have an uncaught exception, on the other hand there is not much we can do if we can not bind to the stream. Programmers should be civilized about catching uncaught-exception and bail out after writing to the error-log. #unchecked_exception
+17. TicTacToe.reader could throw an exception during class-loading - an unchecked-exception. Is this best design? On the one hand we have an uncaught exception, on the other hand there is not much we can do if we can not bind to the stream. Programmers should be civilized about catching uncaught-exception and bail out after writing to the error-log. #exception
 
-18. The logic of checking whether or not a square is valid may be moved from SimpleMoveStrategy / HumanMove to the class Board itself, since a validity of a square is a property of the Board. Do we also need a square class? Think about a crazy board where the connections between squares are a complex graph and can not be predicted with simple logic as in the case of a 2D/3D array. Think about if the squares themselves have additional attributes like trap/clay. Think about a board that is a function of something crazy, like timestamp! A board can be just a hashmap of squares, and each square can carry a list of the squares that are reachable from it.
+18. The logic of checking whether or not a square is valid may be moved from SimpleMoveStrategy / HumanMove to the class Board itself, since a validity of a square is a property of the Board. Do we also need a square class? Think about a crazy board where the connections between squares are a complex graph and can not be predicted with simple logic as in the case of a 2D/3D array. Think about if the squares themselves have additional attributes like trap/clay. Think about a board that is a function of something crazy, like timestamp (eg, interconnections between squares change with time)! A board can be just a hashmap of squares, and each square can carry a list of the squares that are reachable from it.
 
-19. Player is an inner-class of TicTacToe. Why!! Can we think of reasons why business might want to override the default Player class, yes we can! Therefore all the other rationales also apply to Player. 
+19. Player is an inner-class of TicTacToe. Why!! Can we think of reasons why business might want to override the default Player class, yes we can! Therefore all the other rationales also apply to Player.
 
 20. All dependency-injection is done via constructors. Where are the factories. Strategy and Board should definitely have a their own factories, not sure if Player warrants a factory (yes it does, so Yes!). #dependency_injection #factory #hotload #config_driven_factory
 
 21. C# would have a better way to write the constructor in line-84, like object-initializer syntax. What about Java. Yes Java has double-brace initialization. Not sure if that is a good idea though, because now you can have a Player instance without all essential properties set. #elegance #syntax_sugar
 
-22. Player.player_type and Player.player_order could have been boolean too. They could have been enums too, but enums in C#/Java are horrible. Integers are easiest to use and extend, so not sure if boolean is a better choice. Boolean helps readability, doesn't really optimize anything in this scanario unlike in bitsets. 
+22. Player.player_type and Player.player_order could have been boolean too. They could have been enums too, but enums in C#/Java are ugly. Integers are easiest to use and extend, and is a better choice than booleans. Boolean helps readability, doesn't really optimize anything in this scanario unlike in bitsets.
 
-23. TicTacToe.getPosDescription could have a better name TicTacToe.getPositionDesc. Also str could have been initialized to parameter pos isntead of empty string, since this is also the default return value if all if-checks were to fail, (which is actually not possible here because the last else statements do not explicity check any condition).
+23. TicTacToe.getPosDescription could have a better name TicTacToe.getPositionDesc. Also str could have been initialized to parameter pos instead of empty string, since this is also the default return value if all if-checks were to fail, (which is actually not possible here because the last else statements do not explicitly check any condition).
 
-24. Strings are hardcoded throughout the program. There will be problems with internationalization and lcoalziation. Think about RTL too. Trailing space in lines 123/126/129 that are part of the string literal could have factored out to one common line. #localization
+24. Strings are hardcoded throughout the program. There will be problems with internationalization and localization. Think about RTL too. Trailing space in lines 123/126/129 that are part of the string literal could have factored out to one common line. #localization
 
 25. TicTacToe.getPosDescription should have used the range-operators instead of dividing-by-3 and relying on implicit-integer-rounding. Also it makes a hard-reference to 3. #no_quirks
 
 26. If IBoard provided a method checkValidSquare, getPosDescription could have leveraged that. But instead this function assumes a valid input.
 
-27. Is the zero-initialization in line-154 necessary in Java? 
+27. Is the zero-initialization in line-154 necessary in Java?
 
-28. TicTacToe.setMove could be seperated into setMove and isMoveValid. 
+28. TicTacToe.setMove could be separated into setMove and isMoveValid.
 
-29. isWinningConfig should be moved to IBoard, implementation moved to Board. 
+29. isWinningConfig should be moved to IBoard, implementation moved to Board.
 
 30. line-253 again makes a hard reference to 3 instead of TicTacToe.N
 
 31. getRowString and toString should be moved to IBoard.
 
-32. SimpleMoveStrategy is assumed to always return a valid move, but HumanMove is allowed the flexibility to return an invalid-move. This is not consistent. What happens when we extend to human-vs-human games? Strategy implementations should leverage IBoard.isValidMove, and IBoard.setMove should throw an exception if the caller has been irresponsible. 
+32. SimpleMoveStrategy is assumed to always return a valid move, but HumanMove is allowed the flexibility to return an invalid-move. This is not consistent. What happens when we extend to human-vs-human games? Strategy implementations should leverage IBoard.isValidMove, and IBoard.setMove should throw an exception if the caller has been irresponsible.
 
 33. Think about how a PM might come up with unexpected business requirements. I want a timed game! I want a 3D game! I want to add time-travel! Architecture should be robust enough to accomodate an insane PM, and be careful to not create application-logic out of business-logic. #business_illogic
 
-34. SimpleMoveStrategy returns a default of 0 if no moves are found, but it should have thrown an exception. HumanMove assumes human will find a valid move too. Maybe abort if user enters invalid input for 3 consecutive times, or at least provide a way for the user to abort the game. Each component needs to be tolerant of bugs in other components. 
+34. SimpleMoveStrategy returns a default of 0 if no moves are found, but it should have thrown an exception. HumanMove assumes human will find a valid move too. Maybe abort if user enters invalid input for 3 consecutive times, or at least provide a way for the user to abort the game. Each component needs to be tolerant of bugs in other components.
 
 35. Some view logic is also handled by TicTacToe. We really are missing a driver, and we need to delegate IO elsewhere.
 
@@ -76,20 +75,18 @@ TICTACTOE
 
 37. Modules may go in their own package. Some components may warrant their own jar file, others may not. If different teams own different components, deployment is easier when they have their own jars. Just drop or add the jars in some location, and let the orchestrator find and pick up the new jar files from locations specified in configuration. #package
 
-38. IO streams are hardcoded to System.in and System.out. We need a seperate class that handles streams. If we want to play the game over ftps or http instead of over console, we need to write another class that knows how to read/write from ftps/http. Heck.. maybe we want to play the game over Twitter. TicTacToe isn't the kind of game that is fun to play over Twitter but let's pause and think because folks do play Chess over Twitter. 
+38. IO streams are hardcoded to System.in and System.out. We need a separate class that handles streams. If we want to play the game over ftps or http instead of over console, we need to write another class that knows how to read/write from ftps/http. Heck.. maybe we want to play the game over Twitter. Folks do play Chess over Twitter.
 
-39. Reading from input-stream and writing to output-stream are different responsibilties. Input may be from console, output to log. You may want to support passive observers in the ecosystem, like amateurs who silently watch experts play. So the output may have to broadcasted to multiple channels which may be a mix of ftp/console/push-notifications. Human-vs-Human player will also have more than one input-channel. #subscribe #amqp #rabbit #publish 
+39. Reading from input-stream and writing to output-stream are different responsibilties. Input may be from console, output to log. You may want to support passive observers in the ecosystem, like amateurs who silently watch experts play. So the output may have to broadcasted to multiple channels which may be a mix of ftp/console/push-notifications. Human-vs-Human player will also have more than one input-channel. #subscribe #amqp #rabbit #publish
 
 40. We need a Game class that holds the instances of players/boards/strategy/io-handler etc. This class is different from the driver class that actually makes the game progress forward. The Game class should provide a way to persist on disk, and should be serializable. So the game can be saved, and if the driver dies it can be respawn (eg, JVM ran out of memory because of a leak, but everything runs find after you reboot). Generally speaking, if any of the component dies or become unresponsive we should be able to respawn that component without losing the whole game. #respawn #durable #single-point-of-failure #session
 
-41. Add monitoring for performance and availability. #performance #availability #monitor #sla_notifications #sla
+41. Add monitoring for performance and availability. #performance #availability #monitor #sla #observability
 
 42. Add logging that may be mined for data-analytics. This follows from publishing to a variable number of output-channels, just include some log-writers too. #bigdata #analytics
 
-43. What if different specialized components must be run on different servers in a distributed architecture. Think of a MMOG where hundreds of users are simultaneously playing in a board with a millions of square. How do you save a game in between a session. Serializable classes, timers, etc. Maybe you need to upgrade machines, and thus there should be a way to migrate the live components from one machine to another. #remote-procedure-calls #microservice #soa #cluster
+43. What if different specialized components must be run on different servers in a distributed architecture. Think of a MMOG where hundreds of users are simultaneously playing in a board with millions of square. How do you save a game in between a session. Serializable classes, timers, etc. Maybe you need to upgrade machines, and thus there should be a way to migrate the live components from one machine to another. #remote-procedure-calls #microservice #soa #cluster
 
 44. Different components may be run on machines with different characteristics. AI strategy requires a machine with a fast clock, board requires a machine with a lot of ram/disk. Game class could be on a distributed file-system.
 
-45. End of the day, you need to draw a line somewhere and this is often decided by weight business-value with engineering-cost. #business #cost
-
-
+45. End of the day, you need to draw a line somewhere and this is often decided by weighing business-value with engineering-cost. #business #cost
