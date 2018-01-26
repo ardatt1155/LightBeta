@@ -1,6 +1,14 @@
 
 /*
 
+Pitch #1
+We have streams of Tweets. A stream contains a subset of Tweets that contain some hashtag. One stream is the source for all tweets containing #hulk, another stream is for all tweets containing #broccoli, yet another contains all tweets for #tanks. We also have streams for #tintin, #pyramids.
+Now editors create topics. Topic "green" includes #hulk and #forest. Topic "action" includes #hulk and #tank. Topic "comics" includes #hulk and #tintin. Analytics wants to maintain an aggregate of all tweets in the topic green, and another aggregate of sum of word-length of tweets in topic comics (forget about duplicated tweets). My job is to write an application to fulfill the editors/analytics.
+Your job is to build a library that provides the application with the PubSub pattern to solve this problem. The application should be able to create topics, abstract streams with publishers, binds publishers to topics, creates subscribers for users and binds those subscribers to the topics.
+Start out by writing a main-function in the application, which does my job. Now show me how can you make my job easy with your PubSub library.
+
+
+#Pitch #2
 Are you familiar with a PubSub pattern?
 Define a PubSub pattern. What framework/library are you familiar with that uses this pattern.
 Have you used a PubSub pattern in real? What about event-driven programming?
